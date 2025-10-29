@@ -1,0 +1,50 @@
+Create a comprehensive federated learning system with the following specifications:
+
+**Project Requirements:**
+- Implement a complete federated learning system that enables ML model training across distributed devices
+- Preserve data privacy while training models on distributed data
+- Support heterogeneous data distributions and client dropouts
+- Include secure aggregation and differential privacy
+
+**Technical Architecture:**
+- Central Server: Model parameter aggregation, client selection, global model management
+- Client Nodes: Local model training, gradient computation, privacy-preserving updates
+- Communication Layer: Secure channels, message serialization, compression
+- Privacy Engine: Differential privacy, noise calibration, privacy accounting
+
+**Key Features to Implement:**
+1. Federated Averaging (FedAvg) algorithm
+2. Secure aggregation with cryptographic protocols
+3. Differential privacy with calibrated noise
+4. Fault tolerance for client dropouts
+5. Communication efficiency optimization
+6. Non-IID data handling
+
+**Code Structure:**
+- server/central_server.py - Central aggregation server
+- client/federated_client.py - Client-side training
+- privacy/differential_privacy.py - Privacy-preserving techniques
+- communication/secure_channels.py - Secure communication
+- algorithms/fedavg.py - Federated averaging
+- evaluation/federated_metrics.py - Evaluation metrics
+- utils/data_splitter.py - Non-IID data simulation
+
+**Algorithms to Support:**
+- FedAvg (Federated Averaging)
+- FedProx (Handling system heterogeneity)
+- FedNova (Normalized averaging)
+- Secure Aggregation protocols
+
+**Privacy Features:**
+- Differential privacy with (ε, δ) parameters
+- Noise calibration and privacy budget tracking
+- Secure aggregation with secret sharing
+- Anonymization techniques
+
+**Performance Metrics:**
+- Global accuracy and convergence analysis
+- Privacy budget consumption
+- Communication cost and efficiency
+- Client participation rates
+
+Include comprehensive documentation, simulation tools for different scenarios, and privacy analysis tools.

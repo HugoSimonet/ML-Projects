@@ -1,0 +1,66 @@
+Create a comprehensive Graph Neural Network system for social network analysis with the following specifications:
+
+**Project Requirements:**
+- Implement advanced Graph Neural Networks for social network analysis
+- Support multiple GNN architectures (GCN, GAT, GraphSAGE, Graph Transformer)
+- Include community detection, influence analysis, and network dynamics
+- Provide scalable implementation for large-scale graphs
+
+**Technical Architecture:**
+- GNN Models: GCN, GAT, GraphSAGE, Graph Transformer with attention mechanisms
+- Graph Processing: Graph construction, feature engineering, sampling, mini-batching
+- Social Analysis: Community detection, influence maximization, centrality measures
+- Evaluation Framework: Task-specific metrics, graph-level evaluation, interpretability
+
+**Key Features to Implement:**
+1. Multiple GNN architectures with attention mechanisms
+2. Community detection and influence analysis
+3. Scalable processing for large graphs
+4. Multi-task learning across graph tasks
+5. Interpretability and visualization tools
+6. Real-time graph analysis capabilities
+
+**Code Structure:**
+- models/gnn_models.py - GNN architecture implementations
+- models/attention.py - Attention mechanism implementations
+- algorithms/community_detection.py - Community detection algorithms
+- algorithms/influence_maximization.py - Influence analysis
+- data/graph_processing.py - Graph data processing
+- evaluation/graph_metrics.py - Graph-specific evaluation metrics
+- visualization/graph_visualizer.py - Graph visualization tools
+
+**GNN Architectures to Support:**
+- Graph Convolutional Networks (GCN)
+- Graph Attention Networks (GAT)
+- GraphSAGE for inductive learning
+- Graph Transformer for long-range dependencies
+- Custom architectures for specific tasks
+
+**Social Network Analysis Features:**
+- Community detection with modularity optimization
+- Influence maximization algorithms
+- Centrality measures (PageRank, Betweenness, Closeness)
+- Network dynamics and temporal analysis
+- Node classification and link prediction
+
+**Graph Tasks to Support:**
+- Node Classification (user interests, political affiliation)
+- Link Prediction (missing or future edges)
+- Community Detection (cohesive groups)
+- Graph Classification (entire graph classification)
+- Influence Maximization (influential nodes)
+
+**Advanced Techniques:**
+- Multi-head attention for graph nodes
+- Graph sampling for large-scale processing
+- Hierarchical pooling for multi-level analysis
+- Temporal dynamics for time-evolving graphs
+- Heterogeneous graph support
+
+**Performance Metrics:**
+- Node Classification: Accuracy, F1-Score, AUC-ROC
+- Link Prediction: AUC-ROC, Hit Rate, MRR
+- Community Detection: Modularity, Conductance, NMI
+- Influence Analysis: Influence Spread, Seed Set Quality
+
+Include comprehensive documentation, graph visualization tools, and social network analysis examples.

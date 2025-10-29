@@ -1,0 +1,66 @@
+Create a comprehensive NLP system using Large Language Models with the following specifications:
+
+**Project Requirements:**
+- Implement advanced NLP applications using Large Language Models
+- Support multiple NLP tasks (text generation, QA, summarization, classification)
+- Include prompt engineering and few-shot learning capabilities
+- Provide fine-tuning and parameter-efficient training methods
+
+**Technical Architecture:**
+- Language Model Backbone: Pre-trained transformers (GPT, BERT, T5) with custom architectures
+- Prompt Engineering Framework: Template-based prompting, few-shot learning, chain-of-thought
+- Fine-tuning Pipeline: Parameter-efficient fine-tuning (LoRA, AdaLoRA), full fine-tuning
+- Evaluation Framework: Task-specific metrics, human evaluation, bias assessment
+
+**Key Features to Implement:**
+1. Multiple LLM architectures with attention mechanisms
+2. Advanced prompt engineering and few-shot learning
+3. Efficient fine-tuning with parameter optimization
+4. Text generation with controlled creativity
+5. Question answering and summarization
+6. Bias detection and fairness assessment
+
+**Code Structure:**
+- models/language_models.py - LLM architecture implementations
+- models/prompt_engineering.py - Prompt engineering framework
+- models/fine_tuning.py - Fine-tuning pipeline
+- data/nlp_data.py - NLP data processing
+- training/nlp_trainer.py - Training pipeline
+- evaluation/nlp_metrics.py - NLP evaluation metrics
+- generation/text_generator.py - Text generation tools
+
+**LLM Architectures to Support:**
+- GPT-style models for text generation
+- BERT-style models for understanding tasks
+- T5 for text-to-text tasks
+- Custom architectures for specific applications
+
+**NLP Tasks to Support:**
+- Text Classification (sentiment, topic, intent)
+- Named Entity Recognition (entity extraction)
+- Question Answering (reading comprehension)
+- Text Summarization (abstractive, extractive)
+- Text Generation (creative writing, dialogue)
+- Machine Translation (cross-lingual)
+
+**Advanced Techniques:**
+- In-context learning without fine-tuning
+- Chain-of-thought reasoning
+- Retrieval-augmented generation
+- Parameter-efficient fine-tuning (LoRA, AdaLoRA)
+- Multi-modal learning with text
+
+**Prompt Engineering Features:**
+- Template-based prompting
+- Few-shot learning with examples
+- Chain-of-thought reasoning
+- Instruction following
+- Dynamic prompt selection
+
+**Performance Metrics:**
+- BLEU, ROUGE, METEOR for generation
+- Accuracy, F1-Score for classification
+- Exact Match, F1 for question answering
+- Human evaluation protocols
+
+Include comprehensive documentation, prompt engineering tools, and bias analysis capabilities.

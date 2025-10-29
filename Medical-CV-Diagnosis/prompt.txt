@@ -1,0 +1,65 @@
+Create a comprehensive computer vision system for medical diagnosis with the following specifications:
+
+**Project Requirements:**
+- Implement advanced computer vision techniques for medical image analysis
+- Support multiple medical imaging modalities (X-ray, MRI, CT, ultrasound, pathology)
+- Include uncertainty quantification and explainable AI for clinical decision support
+- Ensure regulatory compliance and ethical AI considerations
+
+**Technical Architecture:**
+- Medical Image Processing: DICOM handling, multi-modal fusion, anatomical detection
+- Deep Learning Models: Pre-trained CNNs, Vision Transformers, U-Net for segmentation
+- Uncertainty Quantification: Monte Carlo Dropout, ensemble methods, Bayesian networks
+- Explainability Framework: Grad-CAM, SHAP, LIME, attention mechanisms
+
+**Key Features to Implement:**
+1. Multi-modal medical imaging support
+2. Disease classification and segmentation
+3. Uncertainty quantification for clinical confidence
+4. Explainable AI for medical professionals
+5. Regulatory compliance and validation
+6. Privacy-preserving techniques
+
+**Code Structure:**
+- models/medical_models.py - Medical-specific model architectures
+- models/uncertainty_quantification.py - Uncertainty estimation
+- models/explainability.py - Explainable AI methods
+- data/medical_data.py - Medical image processing
+- preprocessing/dicom_processing.py - DICOM image handling
+- evaluation/medical_metrics.py - Medical evaluation metrics
+- visualization/medical_visualizer.py - Medical image visualization
+
+**Medical Tasks to Support:**
+- Chest X-ray Analysis (pneumonia, COVID-19, tuberculosis)
+- Brain MRI Analysis (tumor detection, stroke classification)
+- Retinal Analysis (diabetic retinopathy, glaucoma)
+- Pathology (cancer detection, tissue classification)
+- Cardiac Imaging (heart disease detection)
+- Dermatology (skin lesion classification)
+
+**Advanced Techniques:**
+- Transfer learning with medical pre-trained models
+- Medical-specific data augmentation
+- Multi-task learning for related medical tasks
+- Federated learning for privacy preservation
+- Active learning for intelligent annotation
+
+**Uncertainty Quantification:**
+- Monte Carlo Dropout for uncertainty estimation
+- Ensemble methods for prediction confidence
+- Bayesian neural networks for probabilistic outputs
+- Conformal prediction for prediction intervals
+
+**Explainability Features:**
+- Grad-CAM for attention visualization
+- SHAP values for feature importance
+- LIME for local explanations
+- Attention mechanisms for interpretability
+
+**Performance Metrics:**
+- Sensitivity, Specificity, Precision, F1-Score
+- AUC-ROC for classification performance
+- Dice Score, Hausdorff Distance for segmentation
+- Calibration Error, Brier Score for uncertainty
+
+Include comprehensive documentation, medical validation tools, and regulatory compliance guidelines.

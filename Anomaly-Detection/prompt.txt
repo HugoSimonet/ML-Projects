@@ -1,0 +1,67 @@
+Create a comprehensive anomaly detection system for high-dimensional data with the following specifications:
+
+**Project Requirements:**
+- Implement advanced anomaly detection techniques for high-dimensional data
+- Support multiple detection methods (statistical, ML, deep learning)
+- Include real-time detection and interpretability features
+- Provide scalable implementation for large datasets
+
+**Technical Architecture:**
+- Statistical Methods: Isolation Forest, One-Class SVM, LOF, Statistical Process Control
+- Deep Learning Methods: Autoencoders, VAE, GANs, Transformer-based detection
+- Ensemble Methods: Multiple algorithm combination, voting, stacking
+- Evaluation Framework: Multiple metrics, cross-validation, statistical significance
+
+**Key Features to Implement:**
+1. Multiple anomaly detection algorithms
+2. High-dimensional data support
+3. Real-time streaming detection
+4. Interpretability and explanation
+5. Multi-modal data support
+6. Scalable processing for large datasets
+
+**Code Structure:**
+- models/statistical_methods.py - Statistical anomaly detection
+- models/deep_learning_methods.py - Deep learning approaches
+- models/ensemble_methods.py - Ensemble techniques
+- data/high_dimensional_data.py - Data processing
+- evaluation/anomaly_metrics.py - Evaluation metrics
+- visualization/anomaly_visualizer.py - Visualization tools
+- streaming/real_time_detection.py - Real-time processing
+
+**Detection Methods to Support:**
+- Isolation Forest for high-dimensional data
+- One-Class SVM for non-linear boundaries
+- Local Outlier Factor (LOF) for local density
+- Autoencoders for reconstruction-based detection
+- Variational Autoencoders (VAE) for probabilistic modeling
+- GANs for adversarial detection
+
+**Data Types to Support:**
+- Tabular Data (structured with mixed types)
+- Time Series (temporal with patterns)
+- Images (computer vision anomaly detection)
+- Text (natural language anomaly detection)
+- Graphs (network anomaly detection)
+- Multimodal (combining multiple types)
+
+**Advanced Techniques:**
+- Deep one-class classification
+- Adversarial anomaly detection
+- Temporal anomaly detection
+- Multi-modal anomaly detection
+- Online learning and streaming
+
+**Performance Metrics:**
+- Precision, Recall, F1-Score, AUC-ROC
+- NDCG, MAP, MRR for ranking
+- Statistical significance testing
+- Cross-validation strategies
+
+**Interpretability Features:**
+- Feature importance analysis
+- Anomaly explanation generation
+- Visualization of anomaly patterns
+- Human-in-the-loop feedback
+
+Include comprehensive documentation, visualization tools, and real-world anomaly detection examples.

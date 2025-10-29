@@ -1,0 +1,59 @@
+Create a comprehensive time series forecasting system using Transformers with the following specifications:
+
+**Project Requirements:**
+- Implement state-of-the-art Transformer architectures for time series forecasting
+- Support multiple forecasting tasks (univariate, multivariate, long-term, short-term)
+- Include anomaly detection and causal inference capabilities
+- Provide probabilistic forecasting with uncertainty quantification
+
+**Technical Architecture:**
+- Transformer Encoder-Decoder: Multi-head attention, positional encoding, residual connections
+- Time Series Modules: Temporal embedding, seasonal decomposition, trend extraction
+- Attention Mechanisms: Self-attention, cross-attention, probabilistic attention
+- Forecasting Heads: Point forecasting, probabilistic forecasting, quantile regression
+
+**Key Features to Implement:**
+1. Multiple Transformer architectures (Vanilla, Informer, Autoformer)
+2. Multi-scale forecasting for different horizons
+3. Probabilistic forecasting with uncertainty quantification
+4. Anomaly detection in time series
+5. Causal inference and analysis
+6. Real-time prediction capabilities
+
+**Code Structure:**
+- models/transformers.py - Transformer architecture implementations
+- models/time_series_models.py - Time series specific models
+- models/probabilistic_forecasting.py - Probabilistic forecasting
+- data/time_series_data.py - Time series data processing
+- training/forecasting_trainer.py - Training pipeline
+- evaluation/forecasting_metrics.py - Evaluation metrics
+- analysis/anomaly_detection.py - Anomaly detection
+
+**Transformer Architectures to Support:**
+- Vanilla Transformer with positional encoding
+- Informer for efficient long sequence processing
+- Autoformer with decomposition-based forecasting
+- Custom architectures for specific time series tasks
+
+**Forecasting Tasks to Support:**
+- Univariate Forecasting (single time series)
+- Multivariate Forecasting (multiple correlated series)
+- Long-term Forecasting (predictions far into future)
+- Short-term Forecasting (high-frequency predictions)
+- Anomaly Detection (unusual patterns)
+- Causal Analysis (causal relationships)
+
+**Advanced Techniques:**
+- ProbSparse attention for efficiency
+- Seasonal decomposition components
+- Multi-scale learning for hierarchical patterns
+- Causal attention mechanisms
+- Online learning and streaming predictions
+
+**Performance Metrics:**
+- MAE, RMSE, MAPE, SMAPE for accuracy
+- Quantile Score, CRPS for probabilistic forecasting
+- Coverage, Sharpness for uncertainty quantification
+- Precision, Recall, F1-Score for anomaly detection
+
+Include comprehensive documentation, visualization tools, and real-world time series examples.

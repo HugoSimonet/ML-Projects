@@ -1,0 +1,58 @@
+Create a comprehensive GAN-based data augmentation system with the following specifications:
+
+**Project Requirements:**
+- Implement advanced Generative Adversarial Networks for data augmentation
+- Support multiple GAN architectures (DCGAN, StyleGAN, CycleGAN)
+- Provide quality assessment and controlled generation
+- Include domain-specific augmentation for different data types
+
+**Technical Architecture:**
+- Generator Networks: DCGAN, StyleGAN, conditional GANs with progressive growing
+- Discriminator Networks: PatchGAN, spectral normalization, multi-scale discriminators
+- Training Framework: Wasserstein GAN, progressive growing, mixed precision
+- Evaluation System: Inception Score, FID, perceptual metrics
+
+**Key Features to Implement:**
+1. Multiple GAN architectures with stable training
+2. Progressive growing for high-resolution generation
+3. Conditional generation for controlled synthesis
+4. Comprehensive quality assessment metrics
+5. Domain-specific augmentation techniques
+6. Real-time data generation pipeline
+
+**Code Structure:**
+- models/generators.py - Generator network implementations
+- models/discriminators.py - Discriminator network implementations
+- training/gan_trainer.py - GAN training framework
+- evaluation/quality_metrics.py - Quality assessment tools
+- augmentation/data_augmenter.py - Data augmentation pipeline
+- visualization/gan_visualizer.py - Generation visualization
+- utils/sampling.py - Sampling and generation utilities
+
+**GAN Architectures to Support:**
+- Deep Convolutional GAN (DCGAN)
+- StyleGAN for high-quality synthesis
+- Conditional GANs for controlled generation
+- CycleGAN for domain transfer
+- Progressive Growing GANs
+
+**Quality Assessment:**
+- Inception Score (IS) for quality evaluation
+- Fréchet Inception Distance (FID) for realism
+- Perceptual Path Length (PPL) for smoothness
+- Precision and Recall for coverage analysis
+
+**Data Types to Support:**
+- Natural images with various resolutions
+- Medical images with domain-specific augmentation
+- Text data with natural language generation
+- Time series data with temporal patterns
+- Tabular data with mixed data types
+
+**Advanced Techniques:**
+- Spectral normalization for training stability
+- Self-attention mechanisms for global consistency
+- Style transfer and attribute manipulation
+- Data augmentation during GAN training
+
+Include comprehensive documentation, quality analysis tools, and integration examples with downstream ML tasks.

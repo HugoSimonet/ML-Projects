@@ -1,0 +1,55 @@
+# Time Series Transformers Requirements
+
+# Core ML and Deep Learning
+torch>=1.9.0
+torchvision>=0.10.0
+transformers>=4.20.0
+datasets>=2.0.0
+
+# Time Series Analysis
+tslearn>=0.5.0
+statsmodels>=0.13.0
+prophet>=1.1.0
+sktime>=0.15.0
+
+# Data Processing
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+scipy>=1.7.0
+
+# Visualization
+matplotlib>=3.5.0
+seaborn>=0.11.0
+plotly>=5.0.0
+wandb>=0.12.0
+
+# Model Evaluation
+torchmetrics>=0.9.0
+tensorboard>=2.8.0
+
+# Time Series Specific
+arch>=5.3.0  # ARCH models
+pmdarima>=2.0.0  # ARIMA models
+pyflux>=0.4.17  # Bayesian time series
+
+# Financial Time Series
+yfinance>=0.1.70
+alpha-vantage>=2.3.1
+ccxt>=2.0.0
+
+# Utilities
+tqdm>=4.64.0
+pyyaml>=6.0
+hydra-core>=1.2.0
+omegaconf>=2.2.0
+
+# Development
+pytest>=7.0.0
+black>=22.0.0
+flake8>=4.0.0
+mypy>=0.950
+
+# Optional: Advanced Time Series
+# gluonts>=0.10.0  # Amazon's time series library
+# darts>=0.20.0  # Python library for easy manipulation and forecasting of time series

@@ -1,0 +1,56 @@
+Create a comprehensive reinforcement learning trading agent with the following specifications:
+
+**Project Requirements:**
+- Implement an RL-based trading agent that learns optimal trading strategies
+- Support multiple RL algorithms (DQN, PPO, A3C) and custom architectures
+- Include sophisticated risk management and portfolio optimization
+- Provide realistic market simulation with order book dynamics
+
+**Technical Architecture:**
+- RL Agent: Deep Q-Network, PPO, Actor-Critic methods with experience replay
+- Market Environment: Realistic simulation with order book dynamics, transaction costs
+- Risk Management: Position sizing, stop-loss, portfolio-level controls
+- Feature Engineering: Technical indicators, market microstructure features
+
+**Key Features to Implement:**
+1. Multiple RL algorithms with stable training
+2. Realistic market simulation with order book dynamics
+3. Advanced risk management and position sizing
+4. Multi-asset portfolio management
+5. Real-time trading capabilities
+6. Comprehensive backtesting framework
+
+**Code Structure:**
+- agents/rl_agent.py - RL agent implementations
+- environments/trading_env.py - Market simulation environment
+- risk/risk_manager.py - Risk management system
+- features/feature_engineering.py - Technical indicators and features
+- backtesting/backtester.py - Backtesting framework
+- live_trading/trading_system.py - Live trading integration
+- evaluation/performance_metrics.py - Trading performance metrics
+
+**RL Algorithms to Support:**
+- Deep Q-Network (DQN) with experience replay
+- Proximal Policy Optimization (PPO)
+- Actor-Critic methods (A2C, A3C)
+- Custom algorithms for financial markets
+
+**Risk Management Features:**
+- Kelly Criterion for position sizing
+- Dynamic stop-loss and take-profit
+- Portfolio-level risk controls
+- Drawdown management
+- Value at Risk (VaR) calculations
+
+**Market Simulation:**
+- Order book dynamics and market impact
+- Transaction costs and slippage modeling
+- Multiple asset classes (stocks, forex, crypto, futures)
+- Real-time data integration
+
+**Performance Metrics:**
+- Sharpe Ratio, Maximum Drawdown, Win Rate
+- Profit Factor, Calmar Ratio
+- Risk-adjusted returns and volatility metrics
+
+Include comprehensive documentation, backtesting tools, and live trading integration examples.

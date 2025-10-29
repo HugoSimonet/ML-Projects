@@ -1,0 +1,42 @@
+Create a comprehensive multi-modal vision-language model implementation with the following specifications:
+
+**Project Requirements:**
+- Implement a state-of-the-art Vision-Language Model that can understand and generate text descriptions of images
+- Support image captioning, visual question answering, and cross-modal retrieval
+- Use PyTorch with transformer architectures (CLIP-style models)
+- Include attention mechanisms and cross-modal fusion layers
+
+**Technical Architecture:**
+- Vision Encoder: Pre-trained ResNet-50 or ViT backbone with feature extraction
+- Language Encoder: BERT or GPT-style transformer with bidirectional context
+- Cross-Modal Fusion: Multi-head cross-attention layers for vision-language alignment
+- Task-Specific Heads: Caption generation, VQA, and retrieval heads
+
+**Key Features to Implement:**
+1. Contrastive learning for vision-language alignment
+2. Multi-head attention for cross-modal interactions
+3. Data augmentation for both vision and text
+4. Transfer learning with pre-trained models
+5. Comprehensive evaluation metrics (BLEU, METEOR, CIDEr, ROUGE-L)
+
+**Code Structure:**
+- models/vision_encoder.py - Vision processing
+- models/language_encoder.py - Text processing  
+- models/cross_modal_fusion.py - Cross-modal attention
+- models/task_heads.py - Task-specific outputs
+- training/trainer.py - Training pipeline
+- evaluation/metrics.py - Evaluation metrics
+- inference/generator.py - Inference and generation
+- data/datasets.py - Data loading and preprocessing
+
+**Datasets to Support:**
+- COCO Captions (330K images with 5 captions each)
+- VQA v2.0 (Visual question answering)
+- Flickr30K (Additional image-caption pairs)
+
+**Performance Targets:**
+- BLEU-4: 0.35+, METEOR: 0.28+, CIDEr: 1.20+, ROUGE-L: 0.55+
+- VQA Accuracy: 70%+ on VQA v2.0 test set
+- Cross-Modal Retrieval: 60%+ R@1 for image-to-text, 50%+ for text-to-image
+
+Include comprehensive documentation, example usage, and visualization tools for attention weights and generated outputs.

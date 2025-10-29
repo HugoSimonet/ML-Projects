@@ -23,20 +23,24 @@ class PointHead(nn.Module):
         return self.fc(x)
 
 class Decomposition(nn.Module):
-    """Simple residual decomposition: x = trend + seasonal (via moving average)."""
     def __init__(self, kernel_size: int = 25):
         super().__init__()
         self.kernel_size = kernel_size
+        # base 1x1xK kernel; we'll expand to D groups at runtime
         self.register_buffer("kernel", torch.ones(1, 1, kernel_size) / kernel_size)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x: (B, T, D) -> apply per feature with conv by reshaping
+        # x: (B, T, D)
         B, T, D = x.shape
-        x_ = x.transpose(1, 2)  # (B, D, T)
-        trend = torch.conv1d(x_, self.kernel, padding=self.kernel_size // 2, groups=1)
-        trend = trend.transpose(1, 2)  # (B, T, D')
+        x_ = x.transpose(1, 2).contiguous()  # (B, D, T)
+
+        # depthwise: expand kernel to (D, 1, K) and set groups=D
+        k = self.kernel.to(dtype=x_.dtype, device=x_.device).expand(D, 1, self.kernel_size)
+        trend = torch.conv1d(x_, k, padding=self.kernel_size // 2, groups=D)  # (B, D, T)
+        trend = trend.transpose(1, 2).contiguous()  # (B, T, D)
         seasonal = x - trend
         return trend, seasonal
+
 
 class TransformerForecaster(nn.Module):
     """Wrapper that combines embeddings, (optional) decomposition, a Transformer backbone,

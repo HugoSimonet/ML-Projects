@@ -15,9 +15,10 @@ class ForecastingTrainer:
 
     def _batch_to_device(self, batch):
         x, y = batch
-        x = torch.tensor(x, dtype=torch.float32, device=self.device)
-        y = torch.tensor(y, dtype=torch.float32, device=self.device)
+        x = torch.as_tensor(x, dtype=torch.float32, device=self.device)
+        y = torch.as_tensor(y, dtype=torch.float32, device=self.device)
         return x, y
+
 
     def fit(self, train_loader: DataLoader, val_loader: Optional[DataLoader] = None,
             epochs: int = 20) -> Dict[str, Any]:
@@ -32,7 +33,7 @@ class ForecastingTrainer:
                 x, y = self._batch_to_device(batch)
                 B, Tin, D = x.shape
                 Tout = y.shape[1]
-                tgt_init = x[:, -1:, :].repeat(1, Tout, 1)
+                tgt_init = tgt_init = torch.cat([x[:, -1:, :], y[:, :-1, :]], dim=1)
 
                 self.optim.zero_grad()
                 if self.head_type == "gaussian":

@@ -31,7 +31,7 @@ def main():
     va_dl = DataLoader(va_ds, batch_size=32, shuffle=False)
 
     # 2) Model: point forecast head (switch to 'quantile' or 'gaussian' as desired)
-    model = TransformerForecaster(in_dim=df.shape[1], out_dim=df.shape[1], d_model=128, head_type="point")
+    model = TransformerForecaster(in_dim=df.shape[1], out_dim=df.shape[1], d_model=32, head_type="point")
     opt = torch.optim.Adam(model.parameters(), lr=3e-4)
 
     # 3) Train

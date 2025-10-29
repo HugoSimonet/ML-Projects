@@ -37,7 +37,7 @@ class TimeSeriesDataset:
         y = self.values[m:e]
         return x, y
 
-def make_toy_series(n: int = 500, k: int = 2, freq: str = "H", seed: int = 42) -> pd.DataFrame:
+def make_toy_series(n: int = 500, k: int = 2, freq: str = "h", seed: int = 42) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
     t = np.arange(n)
     data = {}

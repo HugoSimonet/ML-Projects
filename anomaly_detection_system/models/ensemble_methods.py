@@ -15,34 +15,18 @@ class EnsembleDetector:
     def __init__(self, detectors: List[BaseAnomalyDetector],
                  combination_method: str = 'average',
                  contamination: float = 0.1):
-        """
-        Initialize ensemble detector
-        
-        Args:
-            detectors: List of base detectors to ensemble
-            combination_method: Method to combine scores ('average', 'max', 'median')
-            contamination: Expected proportion of anomalies
-        """
         self.detectors = detectors
         self.combination_method = combination_method
         self.contamination = contamination
         
     def fit(self, X: np.ndarray) -> 'EnsembleDetector':
-        """Fit all detectors in the ensemble"""
+        """Fit all detectors"""
         for detector in self.detectors:
             detector.fit(X)
         return self
     
     def score_samples(self, X: np.ndarray) -> np.ndarray:
-        """
-        Combine scores from all detectors
-        
-        Args:
-            X: Data of shape (n_samples, n_features)
-            
-        Returns:
-            combined_scores: Combined anomaly scores
-        """
+        """Combine scores from all detectors"""
         all_scores = []
         
         for detector in self.detectors:

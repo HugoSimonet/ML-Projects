@@ -1,0 +1,113 @@
+# Global Configuration for Recommendation System
+
+# Dataset Configuration
+datasets:
+  movielens:
+    name: "MovieLens"
+    versions:
+      - "100k"
+      - "1m"
+      - "10m"
+    default_version: "100k"
+    urls:
+      100k: "https://files.grouplens.org/datasets/movielens/ml-100k.zip"
+      1m: "https://files.grouplens.org/datasets/movielens/ml-1m.zip"
+      10m: "https://files.grouplens.org/datasets/movielens/ml-10m.zip"
+
+  lastfm:
+    name: "Last.fm"
+    url: "http://ocelma.net/MusicRecommendationDataset/lastfm-360K.html"
+
+  amazon:
+    name: "Amazon Reviews"
+    categories:
+      - "Electronics"
+      - "Books"
+      - "Movies_and_TV"
+    default_category: "Electronics"
+
+# Model Configuration
+models:
+  collaborative_filtering:
+    user_based:
+      n_neighbors: 40
+      min_k: 1
+      similarity: "cosine"  # cosine, pearson, msd
+
+    item_based:
+      n_neighbors: 40
+      min_k: 1
+      similarity: "cosine"
+
+  matrix_factorization:
+    svd:
+      n_factors: 100
+      n_epochs: 20
+      lr_all: 0.005
+      reg_all: 0.02
+
+    als:
+      factors: 100
+      regularization: 0.01
+      iterations: 15
+      alpha: 1.0
+
+  content_based:
+    tfidf:
+      max_features: 5000
+      ngram_range: [1, 2]
+
+  deep_learning:
+    ncf:
+      embedding_dim: 64
+      hidden_layers: [128, 64, 32]
+      dropout: 0.2
+      learning_rate: 0.001
+      batch_size: 256
+      epochs: 20
+
+  hybrid:
+    weights:
+      collaborative: 0.4
+      content_based: 0.2
+      matrix_factorization: 0.3
+      deep_learning: 0.1
+
+# Training Configuration
+training:
+  test_size: 0.2
+  validation_size: 0.1
+  random_seed: 42
+  cv_folds: 5
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "rmse"
+    - "mae"
+    - "precision_at_k"
+    - "recall_at_k"
+    - "ndcg"
+    - "diversity"
+    - "coverage"
+  k_values: [5, 10, 20]
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  reload: false
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
+
+# Paths
+paths:
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  data_external: "data/external"
+  models: "models"
+  logs: "logs"

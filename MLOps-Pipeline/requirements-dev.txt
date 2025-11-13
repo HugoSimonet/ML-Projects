@@ -1,0 +1,28 @@
+# Development Requirements
+# Install with: pip install -r requirements-minimal.txt -r requirements-dev.txt
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=3.0.0
+pytest-asyncio>=0.19.0
+pytest-mock>=3.8.0
+
+# Code Quality
+black>=22.0.0
+flake8>=4.0.0
+mypy>=0.950
+isort>=5.10.0
+pylint>=2.15.0
+pre-commit>=2.19.0
+
+# Development Tools
+ipython>=8.4.0
+jupyter>=1.0.0
+notebook>=6.4.0
+
+# Documentation
+sphinx>=4.5.0
+sphinx-rtd-theme>=1.0.0
+
+# Additional utilities
+python-dotenv>=0.20.0

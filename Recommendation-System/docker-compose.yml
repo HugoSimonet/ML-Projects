@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: recsys-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python -m src.api.app
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: recsys-web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:8000
+    restart: unless-stopped
+
+volumes:
+  data:
+  models:
+  logs:

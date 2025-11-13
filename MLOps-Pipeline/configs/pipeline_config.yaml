@@ -1,0 +1,83 @@
+# MLOps Pipeline Configuration
+
+# Data Pipeline Configuration
+data:
+  ingestion:
+    source_type: local
+    source_path: ./data
+    file_format: csv
+    batch_size: 1000
+
+  validation:
+    schema:
+      required_columns:
+        - feature_1
+        - feature_2
+        - target
+      dtypes:
+        feature_1: numeric
+        feature_2: numeric
+        target: numeric
+    thresholds:
+      max_missing_pct: 0.1
+      max_duplicate_pct: 0.01
+      outlier_threshold: 3.0
+
+  features:
+    numeric_features:
+      - feature_1
+      - feature_2
+    categorical_features: []
+    text_features: []
+    datetime_features: []
+    scaling_method: standard
+
+  versioning:
+    version_dir: ./data_versions
+    storage_backend: local
+
+# Model Registry Configuration
+registry:
+  registry_dir: ./model_registry
+  storage_backend: local
+  enable_staging: true
+
+# Deployment Configuration
+deployment:
+  platform: local
+  namespace: default
+  registry_url: docker.io/myorg
+
+# Monitoring Configuration
+monitoring:
+  window_size: 1000
+  alert_thresholds:
+    error_rate: 0.1
+    latency_ms: 1000
+    cpu_usage: 80
+
+# Drift Detection Configuration
+drift_detection:
+  drift_threshold: 0.05
+  statistical_test: ks
+  window_size: 1000
+
+# Infrastructure Configuration
+infrastructure:
+  kubernetes:
+    namespace: mlops
+    registry_url: docker.io/myorg
+    service_account: mlops-sa
+    resource_limits:
+      requests:
+        memory: "512Mi"
+        cpu: "500m"
+      limits:
+        memory: "2Gi"
+        cpu: "2000m"
+
+# Security Configuration
+security:
+  enable_rbac: true
+  enable_audit: true
+  enable_encryption: true

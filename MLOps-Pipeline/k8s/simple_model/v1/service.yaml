@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: simple_model
+    version: v1
+  name: simple-model-v1
+  namespace: mlops
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: simple_model
+    version: v1
+  type: ClusterIP

@@ -1,0 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ml-model-ingress
+  namespace: mlops
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/limit-connections: "10"
+spec:
+  tls:
+  - hosts:
+    - ml-api.example.com
+    secretName: ml-api-tls
+  rules:
+  - host: ml-api.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ml-model-service
+            port:
+              number: 80
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ml-model-pdb
+  namespace: mlops
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: ml-model
+---
+apiVersion: v1
+kind: NetworkPolicy
+metadata:
+  name: ml-model-netpol
+  namespace: mlops
+spec:
+  podSelector:
+    matchLabels:
+      app: ml-model
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mlops
+    - podSelector:
+        matchLabels:
+          app: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 8000
+  egress:
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80

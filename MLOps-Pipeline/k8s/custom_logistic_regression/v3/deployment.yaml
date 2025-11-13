@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: custom_logistic_regression
+    component: model-server
+    version: v3
+  name: custom-logistic-regression-v3
+  namespace: mlops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: custom_logistic_regression
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: custom_logistic_regression
+        component: model-server
+        version: v3
+    spec:
+      containers:
+      - env:
+        - name: MODEL_NAME
+          value: custom_logistic_regression
+        - name: MODEL_VERSION
+          value: v3
+        image: docker.io/myorg/custom_logistic_regression:v3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        name: model-server
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+      serviceAccountName: mlops-sa

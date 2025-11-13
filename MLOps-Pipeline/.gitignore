@@ -1,0 +1,110 @@
+# =============================================================================
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# =============================================================================
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.history/
+
+# =============================================================================
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+
+# =============================================================================
+# MLOps specific
+model_registry/
+data_versions/
+logs/
+*.log
+!logs/.gitkeep
+
+# Kubernetes
+k8s/secrets/
+
+# Data
+data/*.csv
+data/*.parquet
+data/*.jsonl
+!data/.gitkeep
+
+# Models
+models/
+*.pkl
+*.h5
+*.keras
+*.pt
+*.onnx
+*.joblib
+
+# =g===========================================================================
+# Large files & Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Temporary files
+*.tmp
+*.bak
+temp/
+tmp/
+
+# Environment variables
+.env
+.env*
+.env.local
+
+# Docker
+.dockerignore
+
+# =============================================================================
+# Monitoring
+prometheus/
+grafana/
+
+# Audit logs
+audit_logs.json
+*_audit.json
+
+# =============================================================================
+# Cloud Provider credentials
+.aws/
+.azure/
+.gcp/

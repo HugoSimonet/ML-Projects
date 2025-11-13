@@ -260,6 +260,8 @@ class MonitoringSystem:
 - 50GB+ disk space
 
 ### Installation
+
+**Quick Start (Recommended):**
 ```bash
 # Clone the repository
 git clone <repository-url>
@@ -269,20 +271,41 @@ cd MLOps-Pipeline
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
+# Install minimal dependencies (fastest)
+pip install -r requirements-minimal.txt
+
+# Run examples
+cd examples
+python full_pipeline_example.py
+```
+
+**Full Installation Options:**
+```bash
+# Option 1: Minimal (Core features only - ~50MB)
+pip install -r requirements-minimal.txt
+
+# Option 2: Development (Adds testing & linting - ~100MB)
+pip install -r requirements-minimal.txt -r requirements-dev.txt
+
+# Option 3: Production (Adds Kubernetes & monitoring - ~150MB)
+pip install -r requirements-minimal.txt -r requirements-prod.txt
+
+# Option 4: Complete (All features - ~200MB+)
 pip install -r requirements.txt
+```
 
-# Install additional MLOps tools
-pip install mlflow kubeflow-pipelines
-pip install prometheus-client grafana-api
+**See [REQUIREMENTS.md](REQUIREMENTS.md) for detailed installation guide.**
 
-# Setup infrastructure
-terraform init
-terraform plan
-terraform apply
+**Kubernetes Deployment:**
+```bash
+# Create namespace
+kubectl create namespace mlops
 
 # Deploy to Kubernetes
 kubectl apply -f k8s/
+
+# Verify deployment
+kubectl get pods -n mlops
 ```
 
 ## 🚀 Quick Start

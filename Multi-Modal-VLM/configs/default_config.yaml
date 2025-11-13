@@ -1,0 +1,109 @@
+# Default configuration for Multi-Modal VLM
+
+# Model configuration
+model:
+  vision_encoder_type: resnet  # Options: 'resnet', 'vit'
+  language_encoder_type: custom  # Options: 'custom', 'bert'
+  hidden_dim: 768
+  fusion_layers: 6
+  num_heads: 12
+  mlp_dim: 3072
+  vocab_size: 30522
+  max_length: 77
+  num_answers: 3129  # For VQA task
+  dropout: 0.1
+  use_contrastive: true
+  freeze_vision: false
+  freeze_language: false
+  pretrained: true
+
+# Training configuration
+training:
+  # Optimization
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  optimizer: adamw  # Options: 'adamw', 'adam', 'sgd'
+  scheduler: cosine  # Options: 'cosine', 'linear', 'polynomial', 'constant'
+
+  # Training parameters
+  batch_size: 32
+  accumulation_steps: 1
+  num_epochs: 10
+  warmup_steps: 1000
+  gradient_clip: 1.0
+
+  # Precision and performance
+  mixed_precision: true
+  num_workers: 4
+  pin_memory: true
+
+  # Checkpointing and logging
+  output_dir: ./outputs
+  logging_steps: 100
+  eval_steps: 1000
+  save_steps: 2000
+  max_checkpoints: 3
+
+  # Task-specific
+  task: caption  # Options: 'caption', 'vqa', 'retrieval', 'contrastive'
+  label_smoothing: 0.1
+
+# Data configuration
+data:
+  # Image preprocessing
+  image_size: 224
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+  # Text preprocessing
+  tokenizer_type: simple  # Options: 'simple', 'bert'
+  max_text_length: 77
+  lowercase: true
+
+  # Dataset paths (update these for your setup)
+  coco:
+    data_root: data/coco/images
+    train_ann: data/coco/annotations/captions_train2017.json
+    val_ann: data/coco/annotations/captions_val2017.json
+
+  vqa:
+    data_root: data/vqa/images
+    train_questions: data/vqa/v2_OpenEnded_mscoco_train2014_questions.json
+    train_annotations: data/vqa/v2_mscoco_train2014_annotations.json
+    val_questions: data/vqa/v2_OpenEnded_mscoco_val2014_questions.json
+    val_annotations: data/vqa/v2_mscoco_val2014_annotations.json
+
+  flickr30k:
+    data_root: data/flickr30k/images
+    train_ann: data/flickr30k/train.txt
+    val_ann: data/flickr30k/val.txt
+
+# Evaluation configuration
+evaluation:
+  metrics:
+    caption: ['BLEU-1', 'BLEU-2', 'BLEU-3', 'BLEU-4', 'METEOR', 'CIDEr', 'ROUGE-L']
+    vqa: ['accuracy']
+    retrieval: ['R@1', 'R@5', 'R@10', 'median_rank', 'mean_rank']
+
+  # Generation parameters for captioning
+  generation:
+    max_length: 50
+    num_beams: 3
+    temperature: 1.0
+    top_k: null
+    top_p: null
+
+# Inference configuration
+inference:
+  device: cuda  # Options: 'cuda', 'cpu'
+  batch_size: 8
+  max_length: 50
+  num_beams: 3
+  temperature: 1.0
+
+# Visualization configuration
+visualization:
+  save_attention: true
+  attention_save_dir: ./visualizations/attention
+  plot_dpi: 150
+  figsize: [15, 5]

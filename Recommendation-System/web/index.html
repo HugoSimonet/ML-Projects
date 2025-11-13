@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation System Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .recommendations {
+            margin-top: 30px;
+        }
+
+        .rec-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rec-item:hover {
+            background: #e9ecef;
+        }
+
+        .rec-rank {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 15px;
+        }
+
+        .rec-score {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Recommendation System Demo</h1>
+            <p>Get personalized recommendations powered by machine learning</p>
+        </header>
+
+        <div class="info-section">
+            <div class="info-card">
+                <h3>Multiple Algorithms</h3>
+                <p>Collaborative Filtering, Content-Based, Matrix Factorization, Deep Learning & Hybrid</p>
+            </div>
+            <div class="info-card">
+                <h3>Multiple Domains</h3>
+                <p>Movies, Music, E-commerce products and more</p>
+            </div>
+            <div class="info-card">
+                <h3>Production Ready</h3>
+                <p>FastAPI backend with Docker support</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Get Recommendations</h2>
+
+            <div class="input-group">
+                <label for="userId">User ID</label>
+                <input type="number" id="userId" placeholder="Enter user ID (e.g., 1)" value="1">
+            </div>
+
+            <div class="input-group">
+                <label for="numItems">Number of Recommendations</label>
+                <input type="number" id="numItems" placeholder="Enter number (1-100)" value="10" min="1" max="100">
+            </div>
+
+            <div class="input-group">
+                <label for="modelSelect">Model</label>
+                <select id="modelSelect">
+                    <option value="">Default (First Available)</option>
+                </select>
+            </div>
+
+            <button onclick="getRecommendations()">Get Recommendations</button>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Loading recommendations...</p>
+            </div>
+
+            <div class="error" id="error"></div>
+
+            <div class="recommendations" id="recommendations"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        // Load available models on page load
+        async function loadModels() {
+            try {
+                const response = await fetch(`${API_URL}/models`);
+                const models = await response.json();
+
+                const select = document.getElementById('modelSelect');
+
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model.name;
+                    option.textContent = `${model.name} (${model.type})`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading models:', error);
+            }
+        }
+
+        async function getRecommendations() {
+            const userId = parseInt(document.getElementById('userId').value);
+            const numItems = parseInt(document.getElementById('numItems').value);
+            const modelName = document.getElementById('modelSelect').value;
+
+            // Validate input
+            if (!userId || userId < 1) {
+                showError('Please enter a valid user ID');
+                return;
+            }
+
+            if (!numItems || numItems < 1 || numItems > 100) {
+                showError('Number of items must be between 1 and 100');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('recommendations').innerHTML = '';
+
+            try {
+                const requestBody = {
+                    user_id: userId,
+                    n_items: numItems,
+                    exclude_seen: true
+                };
+
+                if (modelName) {
+                    requestBody.model_name = modelName;
+                }
+
+                const response = await fetch(`${API_URL}/recommend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to get recommendations');
+                }
+
+                const data = await response.json();
+                displayRecommendations(data);
+
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayRecommendations(data) {
+            const container = document.getElementById('recommendations');
+
+            if (!data.recommendations || data.recommendations.length === 0) {
+                container.innerHTML = '<p>No recommendations available for this user.</p>';
+                return;
+            }
+
+            let html = `<h3>Top ${data.n_recommendations} Recommendations for User ${data.user_id}</h3>`;
+            html += `<p style="color: #666; margin-bottom: 20px;">Model used: <strong>${data.model_used}</strong></p>`;
+
+            data.recommendations.forEach(rec => {
+                html += `
+                    <div class="rec-item">
+                        <div>
+                            <span class="rec-rank">#${rec.rank}</span>
+                            <strong>Item ${rec.item_id}</strong>
+                        </div>
+                        <span class="rec-score">Score: ${rec.score.toFixed(4)}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // Load models when page loads
+        window.addEventListener('DOMContentLoaded', loadModels);
+    </script>
+</body>
+</html>

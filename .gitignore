@@ -1,0 +1,141 @@
+# =============================================================================
+# Python & Virtual Environments
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# =============================================================================
+# IDEs, Editors & OS-specific
+# =============================================================================
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Editor/OS files
+.DS_Store
+.history/
+*.swp
+*.swo
+*~
+
+# =============================================================================
+# Data & Models
+# =============================================================================
+# Ignore data folders and common large data file extensions
+# It's good practice to add specific exceptions for small sample data
+data/
+datasets/
+*.csv
+*.json
+*.jsonl
+*.parquet
+*.xls
+*.xlsx
+*.db
+*.sqlite
+*.sqlite3
+
+# Keep sample data if needed, by un-commenting the lines below
+# !data/sample.csv
+# !datasets/sample_dataset/
+
+# Trained models and model checkpoints
+models/
+model_registry/
+*.pkl
+*.joblib
+*.h5
+*.keras
+*.pt
+*.pth
+*.onnx
+*.pb
+*.tflite
+
+# =============================================================================
+# Notebooks & Testing
+# =============================================================================
+.ipynb_checkpoints
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+
+# =============================================================================
+# Archives & Logs
+# =============================================================================
+# Large files & Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.gz
+*.bz2
+
+# Log files
+logs/
+*.log
+!logs/.gitkeep
+
+# =============================================================================
+# Secrets & Credentials
+# =============================================================================
+# Environment variables
+.env
+.env*
+!.env.example
+!.env.template
+
+# Cloud Provider credentials
+.aws/
+.azure/
+.gcp/
+
+# =============================================================================
+# Other
+# =============================================================================
+# Docker
+.dockerignore
+
+# Temporary files
+*.tmp
+*.bak
+temp/
+tmp/

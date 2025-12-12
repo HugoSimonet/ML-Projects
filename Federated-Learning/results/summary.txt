@@ -1,0 +1,33 @@
+
+============================================================
+FEDERATED LEARNING - TRAINING SUMMARY
+============================================================
+
+Configuration:
+- Total Communication Rounds: 5
+- Number of Clients: 5
+- Samples per Client: 12,000
+- Dataset: MNIST (Federated)
+
+Final Performance:
+- Global Test Accuracy: 99.33%
+- Best Test Accuracy: 99.33%
+- Final Train Accuracy: 98.13%
+
+Training Progress:
+Round 0: Train 82.29% | Test 97.38%
+Round 1: Train 95.54% | Test 98.70%
+Round 2: Train 97.25% | Test 99.10%
+Round 3: Train 97.79% | Test 99.14%
+Round 4: Train 98.13% | Test 99.33%
+
+Client Participation:
+All 5 clients participated in all 5 rounds (100% participation rate)
+
+Key Findings:
+- Fast convergence: Reached 99%+ test accuracy by round 2
+- Minimal overfitting: Test accuracy exceeds train accuracy
+- Consistent client performance: All clients achieved 98%+ accuracy
+- Effective federated averaging: Smooth convergence across rounds
+
+============================================================

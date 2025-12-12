@@ -1,0 +1,70 @@
+# Graph Neural Networks Configuration
+
+# Model Configuration
+model:
+  type: 'gcn'  # Options: gcn, gat, graphsage, transformer
+  input_dim: 128
+  hidden_dim: 64
+  output_dim: 32
+  num_layers: 3
+  dropout: 0.1
+  use_attention: true
+  num_heads: 8
+
+# Training Configuration
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0005
+  optimizer: 'adam'
+  scheduler: 'cosine'
+  patience: 10
+  min_delta: 0.001
+
+# Graph Processing
+graph:
+  max_nodes: 10000
+  max_edges: 50000
+  sampling_method: 'neighbor'  # Options: neighbor, random, edge
+  num_neighbors: [25, 10]
+  negative_sampling_ratio: 1.0
+
+# Task Configuration
+task:
+  type: 'node_classification'  # Options: node_classification, link_prediction, community_detection, influence_maximization
+  metric: 'accuracy'
+
+# Community Detection
+community:
+  num_communities: 10
+  resolution: 1.0
+  modularity_weight: 1.0
+
+# Influence Maximization
+influence:
+  k: 10  # Number of influential nodes
+  threshold: 0.1
+  diffusion_model: 'independent_cascade'
+  num_simulations: 1000
+
+# Evaluation
+evaluation:
+  test_split: 0.2
+  val_split: 0.1
+  metrics: ['accuracy', 'f1_score', 'auc_roc']
+
+# Visualization
+visualization:
+  save_plots: true
+  plot_format: 'png'
+  dpi: 300
+  layout: 'spring'  # Options: spring, kamada_kawai, circular, spectral
+
+# System
+system:
+  device: 'cuda'  # Options: cuda, cpu, auto
+  num_workers: 4
+  seed: 42
+  log_interval: 10
+  save_interval: 5

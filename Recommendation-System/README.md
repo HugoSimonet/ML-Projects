@@ -1,426 +1,268 @@
 # Recommendation System
 
-A comprehensive, production-ready recommendation system supporting multiple algorithms and domains (movies, music, e-commerce). Built with Python, featuring collaborative filtering, content-based filtering, matrix factorization, deep learning, and hybrid approaches.
+![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-red.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+Multi-algorithm recommendation system supporting collaborative filtering, content-based filtering, matrix factorization, and neural networks.
+
+## Overview
+
+This project implements recommendation algorithms for movies, music, and e-commerce. It includes user-based and item-based collaborative filtering, content-based filtering with TF-IDF, matrix factorization (SVD, ALS), neural collaborative filtering, and hybrid methods. Provides REST API and web interface.
 
 ## Features
 
-### Multiple Recommendation Algorithms
-- **Collaborative Filtering** (User-based & Item-based)
-- **Content-Based Filtering** (TF-IDF)
-- **Matrix Factorization** (SVD & ALS)
-- **Deep Learning** (Neural Collaborative Filtering with PyTorch)
-- **Hybrid System** (Weighted & Rank-based fusion)
-
-### Multi-Domain Support
-- **Movies**: MovieLens (100K, 1M, 10M)
-- **Music**: Last.fm dataset
-- **E-commerce**: Amazon reviews, synthetic data
-- Domain-agnostic architecture for easy extension
-
-### Comprehensive Evaluation
-- Rating prediction metrics (RMSE, MAE)
-- Ranking metrics (Precision@K, Recall@K, NDCG@K, MAP@K)
-- Diversity, coverage, and novelty metrics
-- Cross-validation support
-- Visualization and comparison tools
-
-### Production Features
+- Collaborative filtering (user-based, item-based)
+- Content-based filtering (TF-IDF)
+- Matrix factorization (SVD, ALS)
+- Neural collaborative filtering (NCF) with PyTorch
+- Hybrid recommendations (weighted, rank fusion)
+- Multi-domain support (movies, music, e-commerce)
 - FastAPI REST API
-- Docker & Docker Compose support
-- Web demo interface
-- Batch and real-time recommendations
-- Model persistence and loading
-- Comprehensive logging
-- Type hints and docstrings
-- Unit tests
+- Evaluation metrics (RMSE, MAE, Precision@K, NDCG@K)
+- Docker deployment
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Requirements: Python 3.8+, PyTorch 1.9+, scikit-learn, pandas, surprise, fastapi
+
+## Quick Start
+
+### Train Model
+
+```bash
+# Collaborative filtering
+python train.py --algorithm collaborative --data movielens-100k
+
+# Matrix factorization
+python train.py --algorithm svd --data movielens-100k --factors 100
+
+# Neural collaborative filtering
+python train.py --algorithm ncf --data movielens-100k --epochs 20
+```
+
+### Generate Recommendations
+
+```bash
+python recommend.py --user-id 123 --model models/svd_model.pkl --top-k 10
+```
+
+### Start API Server
+
+```bash
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+# Or with Docker
+docker-compose up
+```
+
+## Usage
+
+```python
+from src.models import CollaborativeFiltering, MatrixFactorization
+from src.data import DatasetLoader
+
+# Load data
+loader = DatasetLoader('movielens-100k')
+train_data, test_data = loader.load_and_split()
+
+# Train collaborative filtering
+cf = CollaborativeFiltering(method='user-based', k=20)
+cf.fit(train_data)
+predictions = cf.recommend(user_id=123, top_k=10)
+
+# Train SVD
+svd = MatrixFactorization(algorithm='svd', n_factors=100)
+svd.fit(train_data)
+predictions = svd.predict(user_id=123, item_id=456)
+```
+
+## Algorithms
+
+### Collaborative Filtering
+
+**User-Based** - Find similar users and recommend items they liked
+**Item-Based** - Find similar items to those user has liked
+
+Similarity metrics: Cosine, Pearson correlation, Jaccard
+
+### Content-Based Filtering
+
+Uses item features (text descriptions, genres, tags) and TF-IDF to find similar items.
+
+### Matrix Factorization
+
+**SVD** - Singular Value Decomposition for latent factor models
+**ALS** - Alternating Least Squares for implicit feedback
+
+### Neural Collaborative Filtering
+
+Deep learning model with embedding layers for users and items, followed by MLP layers.
+
+```python
+class NCF(nn.Module):
+    def __init__(self, num_users, num_items, embed_dim, layers):
+        self.user_embedding = nn.Embedding(num_users, embed_dim)
+        self.item_embedding = nn.Embedding(num_items, embed_dim)
+        self.mlp = MLP(embed_dim * 2, layers)
+```
+
+### Hybrid Methods
+
+**Weighted** - Combine predictions from multiple models with learned weights
+**Rank Fusion** - Combine ranked lists using Borda count or reciprocal rank
+
+## API Endpoints
+
+```bash
+# Get recommendations
+POST /recommend
+{
+  "user_id": 123,
+  "top_k": 10,
+  "algorithm": "svd"
+}
+
+# Rate item
+POST /rate
+{
+  "user_id": 123,
+  "item_id": 456,
+  "rating": 4.5
+}
+
+# Get similar items
+GET /similar/{item_id}?top_k=10
+```
+
+## Datasets
+
+- **MovieLens**: 100K, 1M, 10M ratings
+- **Last.fm**: Music listening history
+- **Amazon**: Product reviews
+- **Custom**: Load from CSV with (user_id, item_id, rating)
+
+## Evaluation
+
+```python
+from src.evaluation import evaluate_model
+
+metrics = evaluate_model(
+    model=model,
+    test_data=test_data,
+    metrics=['rmse', 'mae', 'precision@10', 'ndcg@10']
+)
+
+print(f"RMSE: {metrics['rmse']:.4f}")
+print(f"Precision@10: {metrics['precision@10']:.4f}")
+```
+
+Metrics:
+- **Rating Prediction**: RMSE, MAE
+- **Ranking**: Precision@K, Recall@K, NDCG@K, MAP@K
+- **Diversity**: Intra-list diversity, coverage, novelty
+
+## Configuration
+
+```yaml
+data:
+  dataset: movielens-100k
+  split_ratio: 0.8
+  min_ratings: 5
+
+model:
+  algorithm: svd
+  n_factors: 100
+  n_epochs: 20
+  learning_rate: 0.005
+  regularization: 0.02
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+```
 
 ## Project Structure
 
 ```
 Recommendation-System/
-├── config/                 # Configuration files
-│   └── config.yaml        # Main configuration
-├── data/                  # Data directory
-│   ├── raw/              # Raw datasets
-│   ├── processed/        # Preprocessed data
-│   └── external/         # External data sources
-├── models/               # Saved models
-├── src/                  # Source code
-│   ├── data/            # Data loading and preprocessing
-│   │   ├── dataset_loader.py
-│   │   └── preprocessor.py
+├── src/
+│   ├── data/            # Data loaders and preprocessors
 │   ├── models/          # Recommendation algorithms
-│   │   ├── base.py
-│   │   ├── collaborative_filtering.py
-│   │   ├── content_based.py
-│   │   ├── matrix_factorization.py
-│   │   ├── deep_learning.py
-│   │   └── hybrid.py
-│   ├── evaluation/      # Evaluation metrics
-│   │   └── metrics.py
-│   ├── api/            # FastAPI application
-│   │   └── app.py
-│   ├── visualization/  # Plotting utilities
-│   │   └── plots.py
-│   └── utils/          # Utility functions
-│       ├── config_loader.py
-│       └── logger.py
-├── scripts/            # Training and utility scripts
-│   └── train_models.py
-├── tests/             # Unit tests
-│   ├── test_models.py
-│   ├── test_data.py
-│   └── test_evaluation.py
-├── web/               # Web demo interface
-│   └── index.html
-├── notebooks/         # Jupyter notebooks
-├── docs/             # Documentation
-├── Dockerfile        # Docker configuration
-├── docker-compose.yml
-├── requirements.txt  # Python dependencies
-├── setup.py         # Package setup
-└── README.md        # This file
+│   ├── evaluation/      # Metrics
+│   └── api/             # REST API
+├── tests/               # Unit tests
+├── configs/             # Configuration files
+├── models/              # Saved models
+├── data/                # Datasets
+├── train.py             # Training script
+└── recommend.py         # Recommendation script
 ```
 
-## Installation
+## Docker Deployment
 
-### Prerequisites
-- Python 3.8+
-- pip
-- (Optional) Docker & Docker Compose
-
-### Local Installation
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/Recommendation-System.git
-cd Recommendation-System
+```yaml
+# docker-compose.yml
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - MODEL_PATH=/app/models/svd_model.pkl
 ```
-
-2. **Create virtual environment**
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
-
-4. **Install package**
-```bash
-pip install -e .
-```
-
-### Docker Installation
-
-```bash
-docker-compose up -d
-```
-
-This will start:
-- API server on http://localhost:8000
-- Web interface on http://localhost:8080
-
-## Quick Start
-
-### 1. Train Models
-
-```bash
-# Train all models on MovieLens 100K
-python scripts/train_models.py --dataset movielens --version 100k --models all --save --visualize
-
-# Train specific models
-python scripts/train_models.py --dataset movielens --models svd als ncf --save
-
-# Use synthetic data for testing
-python scripts/train_models.py --dataset synthetic --models all --save
-```
-
-### 2. Using the API
-
-**Start the API server:**
-```bash
-python -m src.api.app
-```
-
-**Make requests:**
-```python
-import requests
-
-# Get recommendations
-response = requests.post('http://localhost:8000/recommend', json={
-    'user_id': 1,
-    'n_items': 10,
-    'exclude_seen': True
-})
-recommendations = response.json()
-
-# Predict rating
-response = requests.post('http://localhost:8000/predict', json={
-    'user_id': 1,
-    'item_id': 50
-})
-prediction = response.json()
-```
-
-**API Documentation:**
-Visit http://localhost:8000/docs for interactive API documentation.
-
-### 3. Using the Web Interface
-
-1. Start the API server
-2. Open `web/index.html` in your browser
-3. Enter user ID and get recommendations
-
-### 4. Python Usage
-
-```python
-from src.data.dataset_loader import DatasetLoader
-from src.data.preprocessor import DataPreprocessor
-from src.models.hybrid import HybridRecommender
-from src.models.collaborative_filtering import UserBasedCF
-from src.models.matrix_factorization import SVDRecommender
-from src.evaluation.metrics import Evaluator
-
-# Load data
-loader = DatasetLoader('movielens', '100k')
-data = loader.load()
-ratings_df = data['ratings']
-
-# Preprocess
-preprocessor = DataPreprocessor()
-processed = preprocessor.preprocess_pipeline(ratings_df)
-train_df = processed['train']
-test_df = processed['test']
-
-# Train models
-user_cf = UserBasedCF()
-user_cf.fit(train_df)
-
-svd = SVDRecommender()
-svd.fit(train_df)
-
-# Create hybrid
-hybrid = HybridRecommender(
-    models={'user_cf': user_cf, 'svd': svd},
-    weights={'user_cf': 0.5, 'svd': 0.5}
-)
-
-# Get recommendations
-recommendations = hybrid.recommend(user_id=1, n_items=10)
-print(recommendations)
-
-# Evaluate
-evaluator = Evaluator()
-results = evaluator.evaluate_all(hybrid, test_df, set(train_df['item_id'].unique()))
-print(results)
-```
-
-## Configuration
-
-Edit `config/config.yaml` to customize:
-- Dataset URLs and paths
-- Model hyperparameters
-- Training settings
-- Evaluation metrics
-- API configuration
-
-## API Endpoints
-
-### Core Endpoints
-
-- `POST /recommend` - Get personalized recommendations
-- `POST /predict` - Predict rating for user-item pair
-- `GET /recommend/{user_id}` - Simple recommendation endpoint
-- `POST /batch_recommend` - Batch recommendations for multiple users
-
-### Utility Endpoints
-
-- `GET /` - API information
-- `GET /health` - Health check
-- `GET /models` - List loaded models
-- `POST /load_model` - Load model from disk
-
-## Evaluation Metrics
-
-### Rating Prediction
-- **RMSE** (Root Mean Squared Error)
-- **MAE** (Mean Absolute Error)
-
-### Ranking
-- **Precision@K** - Fraction of recommended items that are relevant
-- **Recall@K** - Fraction of relevant items that are recommended
-- **F1@K** - Harmonic mean of Precision and Recall
-- **NDCG@K** (Normalized Discounted Cumulative Gain) - Position-aware relevance
-- **MAP@K** (Mean Average Precision) - Mean of average precisions
-
-### Diversity & Coverage
-- **Diversity** - Variety of recommendations across users
-- **Coverage** - Fraction of items that can be recommended
-- **Novelty** - How surprising the recommendations are
-
-## Datasets
-
-### MovieLens
-Automatically downloaded when running training scripts.
-
-**Versions:**
-- 100K: 100,000 ratings from 943 users on 1,682 movies
-- 1M: 1 million ratings from 6,040 users on 3,706 movies
-- 10M: 10 million ratings from 71,567 users on 10,681 movies
-
-### Last.fm
-Download manually from: http://ocelma.net/MusicRecommendationDataset/lastfm-360K.html
-
-Place in `data/raw/lastfm-360K/`
-
-### Amazon Reviews
-Download from: https://nijianmo.github.io/amazon/index.html
-
-Place in `data/raw/amazon/{category}/`
-
-### Synthetic Data
-Generated automatically for testing purposes.
-
-## Model Details
-
-### Collaborative Filtering
-Uses user-user or item-item similarity with K-nearest neighbors.
-- **Advantages**: Simple, interpretable, works well with explicit feedback
-- **Disadvantages**: Cold start problem, sparsity issues
-
-### Content-Based Filtering
-Uses TF-IDF to create item profiles and find similar items.
-- **Advantages**: No cold start for items with features, personalized
-- **Disadvantages**: Limited serendipity, requires item features
-
-### Matrix Factorization (SVD/ALS)
-Decomposes rating matrix into latent factors.
-- **Advantages**: Handles sparsity, scalable, good performance
-- **Disadvantages**: Harder to interpret, cold start for new users/items
-
-### Neural Collaborative Filtering
-Deep learning approach using embeddings and neural networks.
-- **Advantages**: Can learn complex patterns, state-of-the-art performance
-- **Disadvantages**: Requires more data, computationally expensive
-
-### Hybrid System
-Combines multiple algorithms using weighted or rank-based fusion.
-- **Advantages**: Best of all worlds, robust, better coverage
-- **Disadvantages**: More complex, requires tuning weights
 
 ## Testing
 
-Run unit tests:
 ```bash
 pytest tests/
-
-# With coverage
-pytest tests/ --cov=src --cov-report=html
 ```
 
-## Docker Usage
+## Implementation Notes
 
-### Build and run
-```bash
-docker-compose up -d
-```
+Uses surprise library for collaborative filtering and matrix factorization. PyTorch for neural models. FastAPI for REST API with automatic OpenAPI documentation.
 
-### View logs
-```bash
-docker-compose logs -f api
-```
+Collaborative filtering uses KNN with cosine similarity. Matrix factorization uses SGD or ALS optimization. NCF uses binary cross-entropy loss for implicit feedback.
 
-### Stop services
-```bash
-docker-compose down
-```
+Handles cold start via content-based recommendations or popularity-based fallbacks. Supports incremental updates for online learning.
 
-### Build individual container
-```bash
-docker build -t recsys .
-docker run -p 8000:8000 -v $(pwd)/models:/app/models recsys
-```
+## Results
 
-## Performance Tips
+Experimental results on MovieLens 100K dataset (943 users, 1,682 movies, 100K ratings):
 
-1. **Use ALS for large datasets** - Optimized for implicit feedback
-2. **Enable GPU for NCF** - Significantly faster training
-3. **Precompute similarities** - For collaborative filtering
-4. **Use batch recommendations** - More efficient than individual requests
-5. **Cache predictions** - For frequently requested items
-6. **Sample data for tuning** - Use subset for hyperparameter optimization
+| Model | RMSE | MAE | Coverage |
+|-------|------|-----|----------|
+| SVD | 0.950 | 0.744 | 100.0% |
+| User-CF | 1.013 | 0.799 | 100.0% |
+| Item-CF | 1.036 | 0.818 | 100.0% |
+| Content-Based | 1.139 | 0.953 | 100.0% |
+| ALS | 2.834 | 2.607 | 89.3% |
 
-## Troubleshooting
+![Model Comparison](results/model_comparison_metrics.png)
 
-### Import errors
-```bash
-pip install -e .
-```
+SVD achieves the best performance with lowest RMSE and MAE. All models except ALS achieve full coverage on the test set.
 
-### CUDA/GPU issues
-Set environment variable:
-```bash
-export CUDA_VISIBLE_DEVICES=""  # Use CPU only
-```
-
-### Memory errors
-- Reduce batch size for NCF
-- Use smaller dataset version
-- Reduce number of factors in matrix factorization
-
-### Slow training
-- Use fewer epochs
-- Reduce K in collaborative filtering
-- Use ALS instead of SVD for large datasets
-
-## Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-## Citation
-
-If you use this project in your research, please cite:
-
-```bibtex
-@software{recommendation_system,
-  author = {Your Name},
-  title = {Comprehensive Recommendation System},
-  year = {2024},
-  url = {https://github.com/yourusername/Recommendation-System}
-}
-```
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- MovieLens dataset: GroupLens Research
-- Surprise library for collaborative filtering
-- Implicit library for ALS implementation
-- FastAPI for the excellent web framework
-
-## Contact
-
-Your Name - your.email@example.com
-
-Project Link: https://github.com/yourusername/Recommendation-System
+See [RESULTS.md](RESULTS.md) for detailed analysis including:
+- Performance metrics comparison
+- Coverage analysis
+- Model ranking visualization
+- Detailed performance breakdown
 
 ## References
 
-1. Koren, Y., Bell, R., & Volinsky, C. (2009). Matrix factorization techniques for recommender systems.
-2. He, X., et al. (2017). Neural collaborative filtering.
-3. Sarwar, B., et al. (2001). Item-based collaborative filtering recommendation algorithms.
-4. Pazzani, M. J., & Billsus, D. (2007). Content-based recommendation systems.
+- Koren et al. "Matrix Factorization Techniques for Recommender Systems"
+- He et al. "Neural Collaborative Filtering"
+- Ricci et al. "Recommender Systems Handbook"
+- Sarwar et al. "Item-Based Collaborative Filtering"
 
----
+## License
 
-**Happy Recommending!**
+MIT License - see LICENSE file for details.

@@ -1,265 +1,251 @@
-# Multi-Modal Vision-Language Model (VLM)
+# Multi-Modal Vision-Language Model
 
-## 🎯 Project Overview
+![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-red.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-This project implements a state-of-the-art Vision-Language Model that can understand and generate text descriptions of images, perform visual question answering, and enable cross-modal retrieval. The model demonstrates deep understanding of both computer vision and natural language processing, showcasing cutting-edge research in multi-modal AI.
+Vision-language model for image captioning, visual question answering, and cross-modal retrieval.
 
-## 🚀 Key Features
+## Overview
 
-- **Image Captioning**: Generate natural language descriptions of images
-- **Visual Question Answering (VQA)**: Answer questions about image content
-- **Cross-Modal Retrieval**: Find images based on text queries and vice versa
-- **Zero-Shot Classification**: Classify images using natural language descriptions
-- **Attention Visualization**: Understand what the model focuses on
+This project implements a multi-modal transformer model that processes both images and text. It supports image captioning, visual question answering (VQA), image-text retrieval, and zero-shot classification.
 
-## 🧠 Technical Architecture
+## Features
 
-### Core Components
+- Image captioning with transformer decoder
+- Visual question answering
+- Cross-modal retrieval (image-to-text, text-to-image)
+- Zero-shot image classification
+- Attention visualization
+- CLIP-style contrastive learning
 
-1. **Vision Encoder**
-   - Pre-trained ResNet-50 or ViT (Vision Transformer) backbone
-   - Feature extraction and spatial attention mechanisms
-   - Multi-scale feature fusion
+## Architecture
 
-2. **Language Encoder**
-   - BERT or GPT-style transformer architecture
-   - Bidirectional context understanding
-   - Positional encoding and attention mechanisms
+**Vision Encoder** - ResNet-50 or Vision Transformer (ViT) backbone for image feature extraction
 
-3. **Cross-Modal Fusion**
-   - Multi-head cross-attention layers
-   - Vision-language alignment learning
-   - Contrastive learning objectives
+**Text Encoder** - BERT or GPT-style transformer for text encoding
 
-4. **Task-Specific Heads**
-   - Caption generation decoder
-   - Classification heads for VQA
-   - Similarity scoring for retrieval
+**Cross-Modal Fusion** - Multi-head cross-attention layers for vision-language alignment
 
-### Advanced Techniques
+**Task Heads** - Decoder for captioning, classifier for VQA, similarity scorer for retrieval
 
-- **Contrastive Learning**: CLIP-style pre-training for vision-language alignment
-- **Attention Mechanisms**: Multi-head attention for cross-modal interactions
-- **Data Augmentation**: Advanced augmentation for both vision and text
-- **Transfer Learning**: Leveraging pre-trained models for better performance
+## Installation
 
-## 📊 Datasets
-
-- **COCO Captions**: 330K images with 5 captions each
-- **VQA v2.0**: Visual question answering dataset
-- **Flickr30K**: Additional image-caption pairs
-- **Conceptual Captions**: Large-scale web-scraped captions
-
-## 🛠️ Implementation Details
-
-### Model Architecture
-```python
-class VisionLanguageModel(nn.Module):
-    def __init__(self, config):
-        self.vision_encoder = VisionEncoder(config.vision)
-        self.text_encoder = TextEncoder(config.text)
-        self.cross_modal_fusion = CrossModalFusion(config.fusion)
-        self.task_heads = TaskHeads(config.tasks)
-    
-    def forward(self, images, text):
-        vision_features = self.vision_encoder(images)
-        text_features = self.text_encoder(text)
-        fused_features = self.cross_modal_fusion(vision_features, text_features)
-        return self.task_heads(fused_features)
+```bash
+pip install -r requirements.txt
 ```
 
-### Training Strategy
-1. **Pre-training Phase**: Contrastive learning on image-text pairs
-2. **Fine-tuning Phase**: Task-specific training with smaller learning rates
-3. **Multi-task Learning**: Joint training on multiple objectives
+Requirements: Python 3.8+, PyTorch 1.9+, torchvision, transformers, pillow
 
-## 📈 Performance Metrics
+## Quick Start
 
 ### Image Captioning
-- **BLEU-4**: 0.35+ (competitive with state-of-the-art)
-- **METEOR**: 0.28+
-- **CIDEr**: 1.20+
-- **ROUGE-L**: 0.55+
+
+```bash
+python caption.py \
+    --image path/to/image.jpg \
+    --model checkpoints/caption_model.pth
+```
 
 ### Visual Question Answering
-- **Accuracy**: 70%+ on VQA v2.0 test set
-- **Open-ended**: Natural language generation quality
-- **Multiple choice**: High accuracy on structured questions
 
-### Cross-Modal Retrieval
-- **Image-to-Text R@1**: 60%+
-- **Text-to-Image R@1**: 50%+
-- **R@5**: 85%+ for both directions
-
-## 🔧 Setup and Installation
-
-### Prerequisites
-- Python 3.8+
-- CUDA 11.0+ (for GPU acceleration)
-- 16GB+ RAM recommended
-- 50GB+ disk space for datasets
-
-### Installation
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd Multi-Modal-VLM
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Download pre-trained models
-python scripts/download_models.py
-
-# Prepare datasets
-python scripts/prepare_datasets.py
+python vqa.py \
+    --image path/to/image.jpg \
+    --question "What color is the car?" \
+    --model checkpoints/vqa_model.pth
 ```
-
-## 🚀 Quick Start
-
-### 1. Image Captioning
-```python
-from models import VisionLanguageModel
-from inference import ImageCaptioner
-
-# Load model
-model = VisionLanguageModel.load_pretrained('vlm-base')
-captioner = ImageCaptioner(model)
-
-# Generate caption
-image_path = 'path/to/image.jpg'
-caption = captioner.generate_caption(image_path)
-print(f"Caption: {caption}")
-```
-
-### 2. Visual Question Answering
-```python
-from inference import VisualQuestionAnswerer
-
-# Initialize VQA system
-vqa = VisualQuestionAnswerer(model)
-
-# Ask question about image
-image_path = 'path/to/image.jpg'
-question = "What color is the car in the image?"
-answer = vqa.answer_question(image_path, question)
-print(f"Answer: {answer}")
-```
-
-### 3. Cross-Modal Retrieval
-```python
-from inference import CrossModalRetriever
-
-# Initialize retrieval system
-retriever = CrossModalRetriever(model)
-
-# Find images by text query
-query = "a red sports car on a highway"
-similar_images = retriever.retrieve_images(query, top_k=5)
-
-# Find text descriptions by image
-image_path = 'path/to/image.jpg'
-similar_texts = retriever.retrieve_texts(image_path, top_k=5)
-```
-
-## 📊 Training and Evaluation
 
 ### Training
-```bash
-# Pre-train on image-text pairs
-python train.py --config configs/pretrain.yaml
 
-# Fine-tune for specific tasks
-python train.py --config configs/captioning.yaml
-python train.py --config configs/vqa.yaml
-python train.py --config configs/retrieval.yaml
+```bash
+python train.py \
+    --task captioning \
+    --dataset coco \
+    --vision-model vit \
+    --text-model bert \
+    --epochs 30
 ```
 
-### Evaluation
-```bash
-# Evaluate on all tasks
-python evaluate.py --model_path checkpoints/best_model.pth
+## Usage
 
-# Evaluate specific task
-python evaluate.py --task captioning --model_path checkpoints/captioning_model.pth
-```
-
-## 🎨 Visualization and Analysis
-
-### Attention Visualization
 ```python
-from visualization import AttentionVisualizer
+from models import VisionLanguageModel
+from PIL import Image
 
-visualizer = AttentionVisualizer(model)
-attention_maps = visualizer.visualize_attention(image_path, question)
-visualizer.plot_attention(attention_maps)
+# Load model
+model = VisionLanguageModel.from_pretrained('checkpoints/model.pth')
+
+# Image captioning
+image = Image.open('photo.jpg')
+caption = model.generate_caption(image)
+print(f"Caption: {caption}")
+
+# Visual question answering
+question = "How many people are in the image?"
+answer = model.answer_question(image, question)
+print(f"Answer: {answer}")
+
+# Image-text similarity
+text = "A dog playing in the park"
+similarity = model.compute_similarity(image, text)
+print(f"Similarity: {similarity:.3f}")
 ```
 
-### Model Interpretability
-- **Grad-CAM**: Visualize important image regions
-- **Attention Weights**: Understand cross-modal interactions
-- **Feature Similarity**: Analyze learned representations
+## Training
 
-## 🔬 Research Contributions
+```python
+from models import VisionLanguageModel
+from data import COCODataset
+from torch.utils.data import DataLoader
 
-### Novel Techniques
-1. **Hierarchical Cross-Modal Attention**: Multi-level attention for better alignment
-2. **Contrastive Pre-training**: Improved vision-language alignment
-3. **Dynamic Task Routing**: Adaptive task-specific processing
+# Create model
+model = VisionLanguageModel(
+    vision_backbone='vit',
+    text_backbone='bert',
+    hidden_dim=768,
+    num_heads=12,
+    num_layers=6
+)
 
-### Experimental Results
-- **Ablation Studies**: Component-wise performance analysis
-- **Cross-Dataset Generalization**: Robustness across domains
-- **Computational Efficiency**: Optimization for real-time inference
+# Load data
+dataset = COCODataset(root='data/coco', split='train')
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
-## 📚 References and Citations
+# Train
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
+for epoch in range(30):
+    for images, captions in dataloader:
+        loss = model.compute_loss(images, captions)
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+```
 
-### Key Papers
-- Radford, A., et al. "Learning Transferable Visual Models From Natural Language Supervision" (CLIP)
-- Chen, T., et al. "A Simple Framework for Contrastive Learning of Visual Representations"
-- Dosovitskiy, A., et al. "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"
+## Datasets
 
-### Datasets
-- Lin, T. Y., et al. "Microsoft COCO: Common Objects in Context"
-- Goyal, Y., et al. "Making the V in VQA Matter: Elevating the Role of Image Understanding in Visual Question Answering"
+- **COCO Captions**: 330K images with 5 captions each
+- **VQA v2.0**: 200K images with 1.1M questions
+- **Flickr30K**: 31K images with captions
+- **Conceptual Captions**: 3.3M image-caption pairs
 
-## 🚀 Future Enhancements
+## Tasks
 
-### Planned Features
-- **Video Understanding**: Extend to video captioning and VQA
-- **Multilingual Support**: Cross-lingual vision-language understanding
-- **Real-time Inference**: Optimization for mobile deployment
-- **Few-shot Learning**: Adaptation to new domains with minimal data
+### Image Captioning
 
-### Research Directions
-- **Causal Reasoning**: Understanding cause-effect relationships in images
-- **Commonsense Knowledge**: Integrating world knowledge into vision-language models
-- **Interactive Learning**: Learning from human feedback and corrections
+Generate natural language descriptions of images using transformer decoder with cross-attention to image features.
 
-## 🤝 Contributing
+### Visual Question Answering
 
-We welcome contributions! Please see our contributing guidelines for:
-- Code style and standards
-- Testing requirements
-- Documentation standards
-- Pull request process
+Answer questions about image content using classification head over fused vision-language features.
 
-## 📄 License
+### Cross-Modal Retrieval
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Find images given text queries (or vice versa) using contrastive learning and similarity scoring.
 
-## 🙏 Acknowledgments
+### Zero-Shot Classification
 
-- OpenAI for CLIP architecture inspiration
-- Hugging Face for transformer implementations
-- COCO dataset creators
-- VQA dataset creators
-- The open-source ML community
+Classify images using text descriptions of categories without task-specific training.
 
----
+## Model Architecture
 
-**Note**: This project demonstrates advanced understanding of multi-modal AI, attention mechanisms, and state-of-the-art vision-language research. The implementation showcases both theoretical knowledge and practical engineering skills in cutting-edge machine learning.
+```python
+class VisionLanguageModel(nn.Module):
+    def __init__(self, vision_backbone, text_backbone, hidden_dim):
+        self.vision_encoder = VisionEncoder(vision_backbone)
+        self.text_encoder = TextEncoder(text_backbone)
+        self.cross_attention = MultiHeadCrossAttention(hidden_dim, num_heads=8)
+        self.fusion = TransformerLayer(hidden_dim)
+
+    def forward(self, images, text):
+        # Extract features
+        img_features = self.vision_encoder(images)
+        text_features = self.text_encoder(text)
+
+        # Cross-modal fusion
+        fused = self.cross_attention(text_features, img_features)
+        output = self.fusion(fused)
+
+        return output
+```
+
+## Attention Visualization
+
+```python
+from visualization import visualize_attention
+
+# Get attention weights
+attention_weights = model.get_attention_weights(image, text)
+
+# Visualize
+visualize_attention(
+    image=image,
+    text=text,
+    attention=attention_weights,
+    save_path='attention_map.png'
+)
+```
+
+## Configuration
+
+```yaml
+model:
+  vision_backbone: vit-base
+  text_backbone: bert-base
+  hidden_dim: 768
+  num_heads: 12
+  num_layers: 6
+  dropout: 0.1
+
+training:
+  task: captioning
+  dataset: coco
+  batch_size: 32
+  epochs: 30
+  learning_rate: 1e-4
+  warmup_steps: 1000
+
+data:
+  image_size: 224
+  max_text_length: 128
+  augmentation: true
+```
+
+## Metrics
+
+**Captioning**: BLEU, METEOR, CIDEr, SPICE
+**VQA**: Accuracy, per-answer-type accuracy
+**Retrieval**: Recall@K, mean reciprocal rank
+**Classification**: Accuracy, top-5 accuracy
+
+## Project Structure
+
+```
+Multi-Modal-VLM/
+├── models/              # Model architectures
+├── data/                # Dataset loaders
+├── training/            # Training loops
+├── evaluation/          # Metrics
+├── visualization/       # Attention visualization
+├── configs/             # Configuration files
+└── train.py             # Main training script
+```
+
+## Implementation Notes
+
+Uses PyTorch with torchvision and transformers. Vision encoder extracts spatial features from images. Text encoder processes tokenized text. Cross-attention aligns visual and textual representations.
+
+For captioning, uses autoregressive decoder with cross-attention to image features. For VQA, classifies over answer vocabulary. For retrieval, computes cosine similarity in joint embedding space.
+
+Pre-training uses contrastive learning (CLIP-style) to align image and text embeddings.
+
+## References
+
+- Radford et al. "Learning Transferable Visual Models From Natural Language Supervision" (CLIP)
+- Li et al. "BLIP: Bootstrapping Language-Image Pre-training"
+- Dosovitskiy et al. "An Image is Worth 16x16 Words: Transformers for Image Recognition" (ViT)
+- Devlin et al. "BERT: Pre-training of Deep Bidirectional Transformers"
+
+## License
+
+MIT License - see LICENSE file for details.

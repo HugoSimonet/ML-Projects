@@ -1,0 +1,74 @@
+server:
+  host: localhost
+  port: 8080
+  num_clients: 10
+  min_clients_per_round: 5
+  max_clients_per_round: 10
+  client_selection_strategy: random
+  aggregation_algorithm: fedprox
+  model_save_path: ./checkpoints
+  log_path: ./logs
+  checkpoint_frequency: 10
+client:
+  client_id: null
+  local_epochs: 5
+  batch_size: 32
+  learning_rate: 0.01
+  optimizer: sgd
+  momentum: 0.9
+  weight_decay: 0.0001
+  device: cpu
+  data_path: ./data
+  local_model_save: false
+privacy:
+  enable_privacy: false
+  epsilon: 1.0
+  delta: 1.0e-05
+  noise_multiplier: 1.1
+  max_grad_norm: 1.0
+  secure_aggregation: false
+  privacy_accounting: true
+communication:
+  protocol: grpc
+  compression_enabled: true
+  compression_ratio: 0.1
+  quantization_bits: 8
+  use_ssl: true
+  timeout_seconds: 300
+  max_retries: 3
+  buffer_size: 1048576
+data:
+  dataset: mnist
+  num_clients: 10
+  iid: false
+  alpha: 0.5
+  train_test_split: 0.8
+  validation_split: 0.1
+  custom_data_path: null
+  download: true
+  normalization: true
+training:
+  num_rounds: 100
+  evaluation_frequency: 1
+  early_stopping: false
+  early_stopping_patience: 10
+  target_accuracy: null
+  fedprox_mu: 0.01
+  fednova_tau_eff: 1.0
+model:
+  model_name: simple_cnn
+  num_classes: 10
+  input_channels: 1
+  hidden_dims:
+  - 128
+  - 64
+  dropout: 0.5
+  pretrained: false
+monitoring:
+  enable_wandb: false
+  wandb_project: federated-learning
+  wandb_entity: null
+  enable_tensorboard: true
+  log_level: INFO
+  metrics_save_path: ./results
+  save_client_metrics: true

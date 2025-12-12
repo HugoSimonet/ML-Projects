@@ -1,0 +1,29 @@
+# Conditional GAN Configuration for MNIST
+
+# Model
+model: cgan
+latent_dim: 100
+image_size: 64
+base_channels: 64
+num_classes: 10
+
+# Dataset
+dataset: mnist
+data_path: ./data
+batch_size: 128
+num_workers: 4
+
+# Training
+epochs: 50
+g_lr: 0.0002
+d_lr: 0.0002
+beta1: 0.5
+beta2: 0.999
+
+# Device
+device: cuda
+
+# Checkpointing
+save_dir: checkpoints/cgan_mnist
+save_interval: 5
+sample_interval: 2

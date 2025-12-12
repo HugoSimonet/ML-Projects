@@ -1,18 +1,89 @@
-# ALPR
-## _Automatic License Plate Recognition_\
-Used skikit-learn and skimage to develop an algorithm that takes any image of a car, reads the characters on the license plate, and outputs a string\
-## Step 1: Detecting the License Plate
- - Convert the car image into a grayscale image then into a binary image so that every pixel is either black or white (See localization.py)\
- ![](/ALPR/Figure_1.png)
- - Detected connected components on the foreground of the transformed image
- - Filtered out the connected components that are too small to be considered a license plate, then the ones that aren't near the bottom of the image (See cca2.py)\
- ![](/ALPR/Figure_2.png)\
-## Step 2: Segmenting the Characters
- - Used CCA again to detect connected components on the license plate that resembled characters and stored those regions
- - Resized regions into 20x20 pixel regions for the next step, Character Recognition (See segmentation.py)\
- ![](/ALPR/Figure_3.png)\
-## Step 3: Character Recognition
- - Used an SVC from skikit-learn to train a model based on 20x20 pixel images of numbers 0-9 and letters A-Z, capitals only, then stored that model (See /models, /train, and machine_train)
- - Model accuracy calculated using a 4-fold CV
- - Model used to predict each character in the original 20x20 pixel regions in our previous step
- - String of the license plate number is outputted
+# ALPR - Automatic License Plate Recognition
+
+Automatic license plate recognition system using scikit-learn and skimage for vehicle plate detection and character extraction.
+
+## Overview
+
+This project implements a three-stage pipeline for reading license plates from vehicle images:
+1. License plate detection and localization
+2. Character segmentation
+3. Character recognition using SVC
+
+## Algorithm
+
+### Step 1: Detecting the License Plate
+
+Convert car image to grayscale and binary (black/white pixels):
+- Detected connected components on foreground
+- Filtered components by size (remove noise)
+- Filtered by position (plates near bottom of image)
+
+Implementation: `localization.py`, `cca2.py`
+
+### Step 2: Segmenting the Characters
+
+Extract individual characters from the detected plate region:
+- Applied CCA to find character-like components
+- Resized each character to 20x20 pixels for recognition
+
+Implementation: `segmentation.py`
+
+### Step 3: Character Recognition
+
+Train SVC classifier on normalized character images:
+- Training data: 20x20 images of digits (0-9) and uppercase letters (A-Z)
+- Validation: 4-fold cross-validation
+- Predict each segmented character
+- Output final license plate string
+
+Implementation: `machine_train.py`, `prediction.py`
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Requirements: scikit-learn, scikit-image, numpy, opencv-python, pillow, matplotlib
+
+## Usage
+
+```python
+# Step 1: Localize plate
+python localization.py
+
+# Step 2: Segment characters
+python segmentation.py
+
+# Step 3: Recognize characters
+python prediction.py
+```
+
+## Results
+
+Algorithm demonstration on test vehicle images:
+
+![Plate Detection](results/Figure_1.png)
+
+![Component Analysis](results/Figure_2.png)
+
+![Character Segmentation](results/Figure_3.png)
+
+See [RESULTS.md](RESULTS.md) for detailed pipeline analysis and performance metrics.
+
+## Project Structure
+
+```
+ALPR/
+├── localization.py      # Plate detection
+├── cca2.py              # Connected component analysis
+├── segmentation.py      # Character extraction
+├── machine_train.py     # Train SVC model
+├── prediction.py        # Character prediction
+├── models/              # Saved SVC models
+└── train/               # Training data
+```
+
+## License
+
+MIT License - see LICENSE file for details.

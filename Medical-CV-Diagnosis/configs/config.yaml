@@ -1,0 +1,96 @@
+# Medical Computer Vision Configuration
+
+# Model Configuration
+model:
+  architecture: 'resnet50'  # Options: resnet50, densenet121, efficientnet_b0, vit_base, unet
+  num_classes: 2
+  pretrained: true
+  dropout_rate: 0.5
+  uncertainty_enabled: true
+  explainability_enabled: true
+
+# Medical Task Configuration
+task:
+  type: 'classification'  # Options: classification, segmentation, detection, multitask
+  medical_domain: 'chest_xray'  # Options: chest_xray, brain_mri, retinal, pathology, cardiac, dermatology
+
+# Training Configuration
+training:
+  epochs: 100
+  batch_size: 16
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  optimizer: 'adam'
+  scheduler: 'cosine'
+  early_stopping_patience: 15
+  gradient_clip: 1.0
+
+# Data Augmentation
+augmentation:
+  enabled: true
+  rotation_range: 10
+  width_shift: 0.1
+  height_shift: 0.1
+  horizontal_flip: true
+  vertical_flip: false
+  zoom_range: 0.1
+  brightness_range: [0.8, 1.2]
+  medical_specific: true  # Use medical-specific augmentations
+
+# Uncertainty Quantification
+uncertainty:
+  method: 'monte_carlo'  # Options: monte_carlo, ensemble, bayesian, conformal
+  mc_samples: 100
+  ensemble_size: 5
+  confidence_threshold: 0.8
+
+# Explainability
+explainability:
+  methods: ['gradcam', 'shap', 'lime', 'attention']
+  gradcam_layer: 'layer4'
+  shap_background_samples: 50
+  lime_num_samples: 1000
+
+# Medical Metrics
+metrics:
+  classification: ['accuracy', 'sensitivity', 'specificity', 'precision', 'f1', 'auc_roc']
+  segmentation: ['dice', 'iou', 'hausdorff', 'sensitivity']
+  uncertainty: ['ece', 'brier', 'reliability']
+
+# DICOM Processing
+dicom:
+  enabled: true
+  window_center: 50
+  window_width: 400
+  normalize: true
+  resize: [224, 224]
+
+# Regulatory & Compliance
+compliance:
+  fda_validation: true
+  ce_marking: true
+  audit_logging: true
+  data_provenance: true
+
+# Privacy & Security
+privacy:
+  hipaa_compliant: true
+  anonymization: true
+  differential_privacy: false
+  encryption: true
+
+# System
+system:
+  device: 'cuda'  # Options: cuda, cpu, auto
+  num_workers: 4
+  mixed_precision: true
+  distributed: false
+  seed: 42
+
+# Paths
+paths:
+  data_dir: 'data/'
+  checkpoint_dir: 'checkpoints/'
+  results_dir: 'results/'
+  logs_dir: 'logs/'
+  cache_dir: 'cache/'

@@ -1,424 +1,245 @@
-# Graph Neural Networks for Social Network Analysis
+# Graph Neural Networks
 
-## 🎯 Project Overview
+![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-red.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-This project implements advanced Graph Neural Networks (GNNs) for comprehensive social network analysis, including community detection, node classification, link prediction, and influence maximization. The project demonstrates deep understanding of graph machine learning, social network theory, and modern GNN architectures.
+Graph neural network implementations for node classification, link prediction, and community detection on social network data.
 
-## 🚀 Key Features
+## Overview
 
-- **Multiple GNN Architectures**: GCN, GraphSAGE, GAT, Graph Transformer, and custom models
-- **Social Network Analysis**: Community detection, influence analysis, and network dynamics
-- **Scalable Implementation**: Efficient processing of large-scale graphs
-- **Multi-task Learning**: Joint learning across different graph tasks
-- **Interpretability**: Explainable AI for graph predictions
-- **Real-time Analysis**: Dynamic graph processing and updates
+This project implements multiple GNN architectures (GCN, GAT, GraphSAGE, Graph Transformer) for analyzing graph-structured data. It provides tools for training on social networks, citation networks, and custom graph datasets.
 
-## 🧠 Technical Architecture
+## Features
 
-### Core Components
+- GNN architectures: GCN, GAT, GraphSAGE, Graph Transformer
+- Tasks: Node classification, link prediction, community detection
+- Graph sampling for large-scale networks
+- Attention mechanisms for interpretability
+- Mini-batch training on large graphs
+- Evaluation metrics for graph tasks
 
-1. **Graph Neural Network Models**
-   - Graph Convolutional Networks (GCN)
-   - Graph Attention Networks (GAT)
-   - GraphSAGE for inductive learning
-   - Graph Transformer for long-range dependencies
-   - Custom architectures for specific tasks
+## Architecture
 
-2. **Graph Processing Pipeline**
-   - Graph construction and preprocessing
-   - Node and edge feature engineering
-   - Graph sampling and mini-batching
-   - Dynamic graph updates
+### Models
 
-3. **Social Network Analysis Tools**
-   - Community detection algorithms
-   - Influence maximization
-   - Centrality measures
-   - Network dynamics modeling
+**GCN (Graph Convolutional Networks)** - Spectral convolution on graphs using normalized adjacency matrix.
 
-4. **Evaluation Framework**
-   - Task-specific metrics
-   - Graph-level evaluation
-   - Interpretability analysis
-   - Scalability benchmarks
+**GAT (Graph Attention Networks)** - Multi-head attention mechanism for weighted neighbor aggregation.
 
-### Advanced Techniques
+**GraphSAGE** - Inductive learning via neighbor sampling and aggregation.
 
-- **Attention Mechanisms**: Multi-head attention for graph nodes
-- **Graph Sampling**: Efficient sampling for large graphs
-- **Hierarchical Pooling**: Multi-level graph representation learning
-- **Temporal Dynamics**: Time-aware graph neural networks
-- **Heterogeneous Graphs**: Multi-type node and edge handling
+**Graph Transformer** - Self-attention across all nodes with positional encoding.
 
-## 📊 Supported Graph Tasks
+### Graph Processing
 
-- **Node Classification**: Predict node labels (e.g., user interests, political affiliation)
-- **Link Prediction**: Predict missing or future edges
-- **Community Detection**: Identify cohesive groups in networks
-- **Graph Classification**: Classify entire graphs
-- **Influence Maximization**: Find influential nodes for information spread
-- **Anomaly Detection**: Detect unusual nodes or edges
+**Sampling** - Neighbor sampling, random walk, layer-wise sampling for scalability.
 
-## 🛠️ Implementation Details
+**Batching** - Mini-batch training via graph partitioning or subgraph sampling.
 
-### Graph Neural Network Architecture
-```python
-class GraphNeuralNetwork(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim, num_layers=3):
-        super().__init__()
-        self.num_layers = num_layers
-        
-        # Graph convolution layers
-        self.conv_layers = nn.ModuleList([
-            GraphConvLayer(input_dim if i == 0 else hidden_dim, 
-                          hidden_dim if i < num_layers - 1 else output_dim)
-            for i in range(num_layers)
-        ])
-        
-        # Attention mechanism
-        self.attention = MultiHeadAttention(hidden_dim, num_heads=8)
-        
-        # Dropout and normalization
-        self.dropout = nn.Dropout(0.1)
-        self.layer_norm = nn.LayerNorm(hidden_dim)
-    
-    def forward(self, x, edge_index, batch=None):
-        # Graph convolution layers
-        for i, conv in enumerate(self.conv_layers):
-            x = conv(x, edge_index)
-            if i < len(self.conv_layers) - 1:
-                x = F.relu(x)
-                x = self.dropout(x)
-        
-        # Apply attention
-        x = self.attention(x, x, x)
-        x = self.layer_norm(x)
-        
-        return x
+**Features** - Node features (embeddings, attributes), edge features, positional encodings.
+
+## Installation
+
+```bash
+pip install -r requirements.txt
 ```
 
-### Graph Attention Network
-```python
-class GraphAttentionLayer(nn.Module):
-    def __init__(self, in_features, out_features, dropout=0.1, alpha=0.2):
-        super().__init__()
-        self.in_features = in_features
-        self.out_features = out_features
-        self.dropout = dropout
-        self.alpha = alpha
-        
-        # Linear transformations
-        self.W = nn.Linear(in_features, out_features, bias=False)
-        self.a = nn.Linear(2 * out_features, 1, bias=False)
-        
-        # LeakyReLU for attention
-        self.leakyrelu = nn.LeakyReLU(alpha)
-        self.dropout_layer = nn.Dropout(dropout)
-    
-    def forward(self, x, edge_index):
-        N = x.size(0)
-        
-        # Linear transformation
-        h = self.W(x)
-        
-        # Compute attention coefficients
-        a_input = self._prepare_attentional_mechanism_input(h, edge_index)
-        e = self.leakyrelu(self.a(a_input))
-        
-        # Apply softmax
-        attention = F.softmax(e, dim=1)
-        attention = self.dropout_layer(attention)
-        
-        # Apply attention to node features
-        h_prime = self._apply_attention(h, attention, edge_index)
-        
-        return h_prime
-```
+Requirements: Python 3.8+, PyTorch 1.9+, PyTorch Geometric, networkx, scikit-learn
 
-### Community Detection
-```python
-class CommunityDetector(nn.Module):
-    def __init__(self, input_dim, hidden_dim, num_communities):
-        super().__init__()
-        self.gnn = GraphNeuralNetwork(input_dim, hidden_dim, hidden_dim)
-        self.community_classifier = nn.Linear(hidden_dim, num_communities)
-        self.modularity_loss = ModularityLoss()
-    
-    def forward(self, x, edge_index):
-        # Get node embeddings
-        node_embeddings = self.gnn(x, edge_index)
-        
-        # Predict community assignments
-        community_logits = self.community_classifier(node_embeddings)
-        
-        return community_logits, node_embeddings
-    
-    def compute_modularity(self, community_assignments, edge_index):
-        return self.modularity_loss(community_assignments, edge_index)
-```
-
-## 📈 Performance Metrics
+## Quick Start
 
 ### Node Classification
-- **Accuracy**: Overall classification accuracy
-- **F1-Score**: Harmonic mean of precision and recall
-- **Macro/Micro F1**: Class-weighted F1 scores
-- **AUC-ROC**: Area under ROC curve
+
+```bash
+python train.py \
+    --task node_classification \
+    --model gcn \
+    --dataset cora \
+    --hidden_dim 64 \
+    --num_layers 3 \
+    --epochs 200
+```
 
 ### Link Prediction
-- **AUC-ROC**: Area under ROC curve
-- **AUC-PR**: Area under Precision-Recall curve
-- **Hit Rate**: Top-k hit rate
-- **MRR**: Mean Reciprocal Rank
+
+```bash
+python train.py \
+    --task link_prediction \
+    --model graphsage \
+    --dataset facebook \
+    --hidden_dim 128 \
+    --num_layers 2 \
+    --epochs 100
+```
 
 ### Community Detection
-- **Modularity**: Quality of community structure
-- **Conductance**: Internal vs external connections
-- **Coverage**: Fraction of edges within communities
-- **Normalized Mutual Information**: Agreement with ground truth
 
-### Influence Analysis
-- **Influence Spread**: Expected number of influenced nodes
-- **Seed Set Quality**: Quality of selected influential nodes
-- **Cascade Prediction**: Accuracy of information spread prediction
-
-## 🔧 Setup and Installation
-
-### Prerequisites
-- Python 3.8+
-- PyTorch 1.9+
-- PyTorch Geometric 2.0+
-- CUDA 11.0+ (recommended for large graphs)
-- 16GB+ RAM recommended
-
-### Installation
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd Graph-Neural-Networks
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install PyTorch Geometric
-pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.9.0+cu111.html
-
-# Install other dependencies
-pip install -r requirements.txt
-
-# Install additional graph libraries
-pip install networkx community python-igraph
+python train.py \
+    --task community_detection \
+    --model gat \
+    --dataset reddit \
+    --hidden_dim 256 \
+    --num_layers 3
 ```
 
-## 🚀 Quick Start
+## Programmatic Usage
 
-### 1. Basic Node Classification
 ```python
-from models import GraphNeuralNetwork
-from data import SocialNetworkDataset
+import torch
+from models import GCN
+from torch_geometric.datasets import Planetoid
 
-# Load social network data
-dataset = SocialNetworkDataset('facebook', root='data/')
+# Load dataset
+dataset = Planetoid(root='/tmp/Cora', name='Cora')
 data = dataset[0]
 
-# Initialize GNN
-model = GraphNeuralNetwork(
-    input_dim=data.x.size(1),
+# Create model
+model = GCN(
+    input_dim=dataset.num_node_features,
     hidden_dim=64,
-    output_dim=dataset.num_classes
+    output_dim=dataset.num_classes,
+    num_layers=3,
+    dropout=0.5
 )
 
-# Train model
-model.train_model(data, epochs=100)
+# Train
+model.train()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
 
-# Evaluate
-accuracy = model.evaluate(data)
-print(f"Node classification accuracy: {accuracy:.4f}")
+for epoch in range(200):
+    optimizer.zero_grad()
+    out = model(data.x, data.edge_index)
+    loss = F.cross_entropy(out[data.train_mask], data.y[data.train_mask])
+    loss.backward()
+    optimizer.step()
 ```
 
-### 2. Community Detection
-```python
-from models import CommunityDetector
-from utils import detect_communities
+## Supported Datasets
 
-# Initialize community detector
-detector = CommunityDetector(
-    input_dim=data.x.size(1),
-    hidden_dim=64,
-    num_communities=10
-)
+- **Citation Networks**: Cora, CiteSeer, PubMed
+- **Social Networks**: Facebook, Twitter, Reddit
+- **Collaboration Networks**: DBLP, arXiv
+- **Custom Graphs**: Load from edge lists or adjacency matrices
 
-# Train detector
-detector.train(data, epochs=200)
+## Configuration
 
-# Detect communities
-communities = detect_communities(detector, data)
-print(f"Detected {len(communities)} communities")
+```yaml
+model:
+  type: gat
+  hidden_dim: 64
+  num_layers: 3
+  num_heads: 8  # for GAT
+  dropout: 0.5
+
+training:
+  epochs: 200
+  batch_size: 256
+  learning_rate: 0.01
+  weight_decay: 5e-4
+
+data:
+  dataset: cora
+  split_ratio: [0.6, 0.2, 0.2]  # train/val/test
+  num_neighbors: [10, 10]  # for GraphSAGE sampling
 ```
 
-### 3. Influence Maximization
-```python
-from models import InfluenceMaximizer
-from algorithms import GreedyInfluenceMaximization
+## Metrics
 
-# Initialize influence maximizer
-influence_model = InfluenceMaximizer(
-    gnn_model=model,
-    influence_threshold=0.1
-)
+### Node Classification
+- Accuracy, Precision, Recall, F1-score
+- Per-class performance
+- Confusion matrix
 
-# Find influential nodes
-influential_nodes = GreedyInfluenceMaximization(
-    model=influence_model,
-    graph=data,
-    k=10  # Top 10 influential nodes
-)
+### Link Prediction
+- AUC-ROC, AUC-PR
+- Precision@K, Recall@K
+- Mean Reciprocal Rank (MRR)
 
-print(f"Most influential nodes: {influential_nodes}")
-```
+### Community Detection
+- Modularity, Conductance
+- Normalized Mutual Information (NMI)
+- Adjusted Rand Index (ARI)
 
-## 📊 Training and Evaluation
+## Model Comparison
 
-### Training Scripts
 ```bash
-# Node classification
-python train.py --task node_classification --dataset facebook --epochs 100
-
-# Link prediction
-python train.py --task link_prediction --dataset cora --epochs 150
-
-# Community detection
-python train.py --task community_detection --dataset karate --epochs 200
-
-# Influence maximization
-python train.py --task influence_maximization --dataset twitter --epochs 100
+python compare_models.py \
+    --dataset cora \
+    --models gcn gat graphsage graph_transformer \
+    --task node_classification \
+    --output comparison_results.json
 ```
 
-### Evaluation
-```bash
-# Evaluate all tasks
-python evaluate.py --model_path checkpoints/best_model.pth
+## Visualization
 
-# Compare different GNN architectures
-python compare_models.py --models gcn,gat,graphsage,transformer
-
-# Analyze community structure
-python analyze_communities.py --results_dir results/
-```
-
-## 🎨 Visualization and Analysis
-
-### Graph Visualization
 ```python
 from visualization import GraphVisualizer
 
-visualizer = GraphVisualizer(data)
-visualizer.plot_network_layout()
-visualizer.plot_communities(communities)
-visualizer.plot_influence_map(influential_nodes)
-visualizer.plot_attention_weights(attention_weights)
+visualizer = GraphVisualizer()
+visualizer.plot_graph(data.edge_index, data.x)
+visualizer.plot_attention_weights(model, data)  # for GAT
+visualizer.plot_embeddings(embeddings, labels)
+visualizer.plot_communities(communities, graph)
 ```
 
-### Performance Analysis
-```python
-from analysis import PerformanceAnalyzer
+## Project Structure
 
-analyzer = PerformanceAnalyzer(results)
-analyzer.plot_training_curves()
-analyzer.plot_accuracy_by_community()
-analyzer.plot_influence_distribution()
+```
+Graph-Neural-Networks/
+├── models/              # GNN architectures
+├── algorithms/          # Community detection, influence maximization
+├── data/                # Dataset loaders
+├── evaluation/          # Metrics and evaluators
+├── utils/               # Graph processing utilities
+├── visualization/       # Plotting tools
+├── configs/             # YAML configurations
+├── train.py             # Main training script
+└── evaluate.py          # Evaluation script
 ```
 
-## 🔬 Research Contributions
+## Implementation Notes
 
-### Novel Techniques
-1. **Temporal Graph Neural Networks**: Time-aware graph learning
-2. **Heterogeneous Graph Learning**: Multi-type node and edge handling
-3. **Graph Contrastive Learning**: Self-supervised graph representation learning
+Models use PyTorch Geometric for efficient graph operations. Message passing follows the standard aggregation-update pattern. Attention uses scaled dot-product for GAT. GraphSAGE uses mean/LSTM/pooling aggregators.
 
-### Experimental Studies
-- **Scalability Analysis**: Performance on large-scale graphs
-- **Community Quality**: Evaluation of community detection methods
-- **Influence Dynamics**: Analysis of influence spread patterns
+For large graphs, use neighbor sampling to bound memory usage. Mini-batching via graph partitioning or random subgraph sampling. GPU acceleration supported for all operations.
 
-## 📚 Advanced Features
+## Results
 
-### Dynamic Graph Processing
-- **Temporal Updates**: Handle time-evolving graphs
-- **Incremental Learning**: Update models with new data
-- **Stream Processing**: Real-time graph analysis
-- **Event Detection**: Detect significant graph changes
+Experimental results on Cora citation network (2,708 nodes, 7 classes):
 
-### Interpretability
-- **Attention Visualization**: Visualize attention patterns
-- **Node Importance**: Identify important nodes
-- **Path Analysis**: Analyze information flow paths
-- **Feature Attribution**: Understand feature importance
+| Model | Test Accuracy | F1-Score |
+|-------|--------------|----------|
+| GCN | Competitive | Strong |
+| GAT | Best | Strong |
+| GraphSAGE | Competitive | Strong |
 
-### Scalability
-- **Graph Sampling**: Efficient sampling for large graphs
-- **Distributed Training**: Multi-GPU training
-- **Memory Optimization**: Efficient memory usage
-- **Approximation Algorithms**: Fast approximate algorithms
+![Model Comparison](results/model_comparison_accuracy.png)
 
-## 🚀 Deployment Considerations
+See [RESULTS.md](RESULTS.md) for detailed results, training curves, and visualizations including:
+- Model comparison plots
+- Training progress curves
+- Node embedding visualizations
+- Performance analysis
 
-### Production Deployment
-- **Model Serving**: REST API for graph analysis
-- **Real-time Processing**: Stream processing for dynamic graphs
-- **Caching**: Cache frequently accessed results
-- **Monitoring**: Performance and quality monitoring
+## Testing
 
-### Integration
-- **Social Media APIs**: Integration with social platforms
-- **Database Integration**: Graph database integration
-- **Visualization Tools**: Integration with graph visualization tools
+```bash
+pytest tests/
 
-## 📚 References and Citations
+# Quick verification
+python verify_installation.py
+```
 
-### Key Papers
-- Kipf, T. N., & Welling, M. "Semi-Supervised Classification with Graph Convolutional Networks"
-- Veličković, P., et al. "Graph Attention Networks"
-- Hamilton, W. L., et al. "Inductive Representation Learning on Large Graphs"
+## References
 
-### Social Network Analysis
-- Newman, M. E. J. "Networks: An Introduction"
-- Easley, D., & Kleinberg, J. "Networks, Crowds, and Markets"
-- Barabási, A. L. "Network Science"
+- Kipf & Welling "Semi-Supervised Classification with Graph Convolutional Networks" (GCN)
+- Veličković et al. "Graph Attention Networks" (GAT)
+- Hamilton et al. "Inductive Representation Learning on Large Graphs" (GraphSAGE)
+- Vaswani et al. "Attention is All You Need" (Transformer architecture)
+- Fey & Lenssen "Fast Graph Representation Learning with PyTorch Geometric"
 
-## 🚀 Future Enhancements
+## License
 
-### Planned Features
-- **Multi-Modal Graphs**: Graphs with multiple data types
-- **Causal Inference**: Causal analysis in social networks
-- **Privacy-Preserving Analysis**: Privacy-preserving graph analysis
-- **Federated Graph Learning**: Distributed graph learning
-
-### Research Directions
-- **Graph Neural Architecture Search**: Automated GNN design
-- **Graph Foundation Models**: Large-scale pre-trained graph models
-- **Quantum Graph Neural Networks**: Quantum computing for graphs
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our contributing guidelines for:
-- Code style and standards
-- Testing requirements
-- Documentation standards
-- Graph analysis methodologies
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- PyTorch Geometric team
-- NetworkX developers
-- The graph machine learning community
-- Social network analysis researchers
-
----
-
-**Note**: This project demonstrates advanced understanding of graph machine learning, social network analysis, and modern GNN architectures. The implementation showcases both theoretical knowledge and practical skills in cutting-edge graph neural network research and applications.
+MIT License - see LICENSE file for details.

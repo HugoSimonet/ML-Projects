@@ -1,0 +1,32 @@
+# StyleGAN Configuration for Custom Dataset
+
+# Model
+model: stylegan
+latent_dim: 512
+image_size: 256
+base_channels: 64
+
+# Dataset
+dataset: custom
+data_path: ./data/custom
+batch_size: 16
+num_workers: 4
+
+# Training
+epochs: 300
+g_lr: 0.002
+d_lr: 0.002
+beta1: 0.0
+beta2: 0.99
+
+# StyleGAN-specific
+r1_gamma: 10.0
+pl_weight: 2.0
+
+# Device
+device: cuda
+
+# Checkpointing
+save_dir: checkpoints/stylegan_custom
+save_interval: 20
+sample_interval: 10

@@ -230,6 +230,32 @@ print("Class distribution:", class_counts)
 3. **Use learning rate scheduling** (included)
 4. **Regularize with weight decay**
 
+## Results
+
+Training results on CIFAR-10 dataset (50,000 training images, 10,000 test images):
+
+### Training Curves
+![Training and Validation Curves](results/train-test-eval.png)
+
+Training and validation accuracy/loss showing convergence and generalization performance.
+
+### Sample Predictions
+![Sample Predictions](results/Figure_1.png)
+
+### Classification Analysis
+![Confusion Analysis](results/Figure_3.png)
+
+### Misclassified Samples
+![Misclassified Samples](results/misclassified-samples.png)
+
+Examples of challenging cases highlighting common confusion patterns between similar classes.
+
+See [RESULTS.md](RESULTS.md) for detailed analysis including:
+- Complete training curves
+- Confusion matrix analysis
+- Per-class performance breakdown
+- Failure mode analysis
+
 ## Troubleshooting
 
 ### Common Issues

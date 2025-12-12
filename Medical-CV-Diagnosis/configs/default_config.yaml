@@ -1,0 +1,63 @@
+# Default Configuration for Medical CV Diagnosis System
+
+# Task configuration
+task: classification  # classification or segmentation
+modality: CT  # CT, MRI, XRAY, etc.
+
+# Data configuration
+data:
+  data_dir: ./data
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  batch_size: 32
+  num_workers: 4
+  image_size: [224, 224]
+  normalize_method: min_max  # min_max, z_score, window
+  augmentation: true
+  balanced_sampling: false
+
+# Model configuration
+model:
+  architecture: resnet50  # resnet50, densenet121, efficientnet_b0, vit_base_patch16_224, unet, attention_unet
+  num_classes: 2
+  in_channels: 1
+  pretrained: true
+  dropout: 0.5
+  freeze_backbone: false
+
+# Training configuration
+training:
+  num_epochs: 100
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  optimizer: adam  # adam, sgd, adamw
+  loss_function: focal  # focal, dice, tversky, combined
+  scheduler: reduce_on_plateau  # reduce_on_plateau, cosine, step
+  mixed_precision: true
+  early_stopping_patience: 15
+  save_best: true
+
+# Uncertainty quantification
+uncertainty:
+  enable: false
+  method: mc_dropout  # mc_dropout, ensemble
+  num_samples: 30
+
+# Explainability
+explainability:
+  enable: false
+  methods:
+    - gradcam
+  save_visualizations: true
+
+# Paths
+checkpoint_dir: ./checkpoints
+log_dir: ./logs
+output_dir: ./output
+
+# Reproducibility
+seed: 42
+
+# Device
+device: cuda  # cuda or cpu

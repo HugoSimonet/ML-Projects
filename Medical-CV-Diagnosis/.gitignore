@@ -39,8 +39,12 @@ ENV/
 *.ipynb
 
 # Data
-data/
-datasets/
+data/**
+!data/**/
+!data/**/*.py
+datasets/**
+!datasets/**/
+!datasets/**/*.py
 *.dcm
 *.nii
 *.nii.gz

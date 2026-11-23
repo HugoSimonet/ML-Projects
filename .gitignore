@@ -57,10 +57,15 @@ venv.bak/
 # =============================================================================
 # Data & Models
 # =============================================================================
-# Ignore data folders and common large data file extensions
-# It's good practice to add specific exceptions for small sample data
-data/
-datasets/
+# Ignore the CONTENTS of data folders (datasets) and common large data file extensions,
+# but keep Python source that lives inside them (loaders, preprocessing).
+# Ignoring the folders themselves (data/, models/) kept 62 .py files out of the repo before 2026-11-23.
+**/data/**
+!**/data/**/
+!**/data/**/*.py
+**/datasets/**
+!**/datasets/**/
+!**/datasets/**/*.py
 *.csv
 *.json
 *.jsonl
@@ -75,8 +80,10 @@ datasets/
 # !data/sample.csv
 # !datasets/sample_dataset/
 
-# Trained models and model checkpoints
-models/
+# Trained models and model checkpoints (the weights), but keep model source code
+**/models/**
+!**/models/**/
+!**/models/**/*.py
 model_registry/
 *.pkl
 *.joblib

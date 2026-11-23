@@ -29,7 +29,7 @@ Individual character extraction and 20x20 pixel normalization for recognition in
 **Character Recognition Model**: Support Vector Classifier (SVC)
 - **Training Data**: 20x20 pixel images of digits (0-9) and uppercase letters (A-Z)
 - **Validation**: 4-fold cross-validation
-- **Accuracy**: Competitive performance on character classification
+- **Evaluation**: 4-fold cross-validation of the character classifier
 
 ## Processing Steps
 

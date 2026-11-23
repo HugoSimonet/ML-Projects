@@ -33,7 +33,7 @@ Examples of misclassified images highlighting challenging cases and common failu
 
 Results from CNN training on CIFAR-10:
 
-- **Test Accuracy**: Achieved competitive performance
+- **Test Accuracy**: see the training and evaluation curves in `results/train-test-eval.png`
 - **Convergence**: Model converges within expected epoch range
 - **Common Confusions**: Cat-Dog and Automobile-Truck pairs show expected similarity-based errors
 

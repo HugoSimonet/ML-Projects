@@ -51,8 +51,7 @@ logs/
 checkpoints/*.pth
 !checkpoints/.gitkeep
 
-# Results
-results/*.png
+# Results (the summary plots are small and referenced by the README, so they are tracked)
 results/*.pdf
 results/*.csv
 !results/.gitkeep

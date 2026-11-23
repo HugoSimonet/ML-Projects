@@ -46,7 +46,7 @@ Overall ranking by combined performance score (lower RMSE + lower MAE + higher c
 
 - **Best Model**: SVD (Singular Value Decomposition) achieved the lowest RMSE (0.950) and MAE (0.744) with full coverage
 - **Collaborative Filtering**: User-based and item-based CF both performed well with complete coverage
-- **Content-Based**: Competitive performance using only item metadata
+- **Content-Based**: RMSE 1.139 using only item metadata, behind the collaborative methods
 - **ALS**: Lower coverage (89.3%) and higher error rates, indicating convergence challenges on this dataset
 
 ## Performance Analysis

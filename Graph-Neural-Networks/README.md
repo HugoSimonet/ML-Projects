@@ -211,9 +211,9 @@ Experimental results on Cora citation network (2,708 nodes, 7 classes):
 
 | Model | Test Accuracy | F1-Score |
 |-------|--------------|----------|
-| GCN | Competitive | Strong |
-| GAT | Best | Strong |
-| GraphSAGE | Competitive | Strong |
+| GCN | 0.728 | 0.719 |
+| GAT | **0.746** | **0.742** |
+| GraphSAGE | 0.744 | 0.734 |
 
 ![Model Comparison](results/model_comparison_accuracy.png)
 

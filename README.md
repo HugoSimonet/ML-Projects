@@ -1,52 +1,39 @@
 # ML-Projects
 
-A collection of machine learning projects covering deep learning, reinforcement learning, federated learning, computer vision, NLP, and MLOps.
+Machine learning projects by Hugo Simonet: anomaly detection, recommendation, graph neural networks, federated learning, computer vision, NLP, reinforcement learning and MLOps.
 
-## Computer Vision
+Portfolio: [hugo-simonet.vercel.app](https://hugo-simonet.vercel.app)
 
-- [License Plate Recognition](ALPR): Automatic license plate detection and character recognition from vehicle images.
-- [CIFAR-10](CIFAR-10): Image classification on CIFAR-10 dataset using convolutional neural networks.
-- [Medical Image Analysis](Medical-CV-Diagnosis): Deep learning for medical image classification and segmentation with uncertainty quantification and explainability.
-- [Multi-Modal Vision-Language Model](Multi-Modal-VLM): Vision-language model for image captioning, visual question answering, and cross-modal retrieval.
+## Projects with results
 
-## Natural Language Processing
+| Project | What it does | Headline result |
+|---|---|---|
+| [Anomaly Detection System](anomaly_detection_system) | Autoencoders, VAE, Isolation Forest, One-Class SVM and LOF behind one evaluation framework | **F1 0.989, AUC 1.000** on manufacturing defects. The other benchmarks (credit-card fraud, network intrusion, IoT sensors) and their caveats are in [UNDERSTANDING_RESULTS.md](anomaly_detection_system/docs/UNDERSTANDING_RESULTS.md) |
+| [Federated Learning](Federated-Learning) | FedAvg across 5 simulated clients, with differential-privacy support | **99.33%** global test accuracy on MNIST after 5 rounds; 56 tests pass |
+| [Recommendation System](Recommendation-System) | User/item collaborative filtering, content-based, SVD, ALS and neural CF, served by a FastAPI API | **SVD: RMSE 0.950, MAE 0.744** on MovieLens 100K ([results](Recommendation-System/RESULTS.md)) |
+| [Graph Neural Networks](Graph-Neural-Networks) | GCN, GAT and GraphSAGE for node classification | **GAT: 74.6% accuracy, F1 0.742** on Cora (GraphSAGE 74.4%, GCN 72.8%) |
+| [CIFAR-10](CIFAR-10) | CNN image classifier with training curves and error analysis | [Results and plots](CIFAR-10/RESULTS.md) |
+| [License Plate Recognition](ALPR) | Classical computer vision to find the plate, plus an SVC to read each character | [Pipeline and results](ALPR/RESULTS.md) |
+| [MNIST Neural Network](MNIST-NN) | A neural network written from scratch in NumPy: initialization, forward pass, backpropagation | Notebook walkthrough |
 
-- [NLP with Large Language Models](NLP-LLM-Applications): Natural language processing applications using pre-trained LLMs including GPT, BERT, and T5 with fine-tuning and prompt engineering.
+## Code complete, results not yet published
 
-## Generative Models
+| Project | What it does | Status |
+|---|---|---|
+| [MLOps Pipeline](MLOps-Pipeline) | Training, deployment, monitoring and A/B testing, with Docker and Kubernetes configs | 10 tests pass |
+| [RL Trading Agent](RL-Trading-Agent) | DQN, PPO and A3C trading agents with risk management and backtesting | Imports cleanly; no published backtest yet |
+| [GAN Data Augmentation](GAN-Data-Augmentation) | GANs that generate synthetic training data | Imports cleanly; no published results yet |
+| [Medical CV Diagnosis](Medical-CV-Diagnosis) | Medical image classification with uncertainty and explainability | Needs `opencv-python`; no published results yet |
+| [NLP with LLMs](NLP-LLM-Applications) | Fine-tuning and prompting GPT-2, BERT and T5 | Needs `transformers`; early results only |
+| [Time Series Anomaly Detection](Anomaly-Detection) | Transformer forecasting with STL and Isolation Forest anomaly detection | Imports cleanly; no published results yet |
 
-- [GAN Data Augmentation](GAN-Data-Augmentation): Generate high-quality synthetic training data using Generative Adversarial Networks.
+## In progress
 
-## Time Series and Forecasting
-
-- [Time Series Transformers](Time-Series-Transformers): Transformer-based models for time series forecasting including Informer and Autoformer.
-- [Anomaly Detection System](anomaly_detection_system): Unsupervised anomaly detection for time series and tabular data.
-
-## Federated Learning and Privacy
-
-- [Federated Learning](Federated-Learning): Privacy-preserving distributed machine learning with multiple federated learning algorithms and differential privacy support.
-
-## Reinforcement Learning
-
-- [RL Trading Agent](RL-Trading-Agent): Reinforcement learning agent for algorithmic trading using DQN, PPO, and A3C with risk management and backtesting.
-
-## Graph Neural Networks
-
-- [Graph Neural Networks](Graph-Neural-Networks): Graph neural network implementations for node classification, link prediction, and community detection.
-
-## Recommendation Systems
-
-- [Recommendation System](Recommendation-System): Multi-algorithm recommendation system supporting collaborative filtering, content-based filtering, matrix factorization, and neural networks.
-
-## MLOps and Deployment
-
-- [MLOps Pipeline](MLOps-Pipeline): End-to-end ML pipeline for model training, deployment, monitoring, and A/B testing with Docker and Kubernetes support.
-
-## Foundational Projects
-
-- [MNIST Neural Network](MNIST-NN): Neural network implementation from scratch without ML libraries for handwritten digit recognition.
-- [Anomaly Detection](Anomaly-Detection): Statistical and machine learning approaches for detecting anomalies in datasets.
+| Project | Status |
+|---|---|
+| [Time Series Transformers](Time-Series-Transformers) | Informer and Autoformer implementations; the benchmark isn't finished |
+| [Multi-Modal VLM](Multi-Modal-VLM) | Captioning, VQA and retrieval; the `utils/checkpoint` module still needs writing |
 
 ---
 
-More information on each project is provided in the README files in each project's folder.
+Status reflects an audit on 2026-11-23: every file compiles, modules import, and tests pass where noted. The `.gitignore` keeps new datasets and model weights out of the repo while tracking the source code in `data/` and `models/` folders.
